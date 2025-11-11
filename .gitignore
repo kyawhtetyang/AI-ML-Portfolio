@@ -1,18 +1,22 @@
-# Ignore automation/install folder
-__install/
-__install/.build_hash
-
-# Python caches
+# -----------------------------
+# Python / Conda
+# -----------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environments
-.venv/
+# Conda / virtual environments
+# Do NOT commit your env folders
 env/
-venv/
 ENV/
+.venv/
+venv/
 *.env
+# specific Conda environments
+tf/
+fk/
+am/
+gm/
 
 # Jupyter Notebook checkpoints
 .ipynb_checkpoints/
@@ -20,24 +24,44 @@ ENV/
 # Logs
 *.log
 
+# -----------------------------
 # OS generated files
+# -----------------------------
 .DS_Store
 Thumbs.db
 
-# IDE/editor folders
+# -----------------------------
+# IDE / editor folders
+# -----------------------------
 .vscode/
 .idea/
 
-# ML model outputs
+# -----------------------------
+# ML / AI outputs
+# -----------------------------
 models/
 *.h5
 *.pt
 *.pkl
 *.joblib
 
+# -----------------------------
 # Data files
-data/
-*.csv
-*.json
-*.txt
+# -----------------------------
+# Ignore large datasets but keep small sample/demo data
+data/*
+!data/sample_*.csv
+!data/sample_*.json
+!data/sample_*.txt
 
+# -----------------------------
+# Automation / install
+# -----------------------------
+__install/
+__install/.build_hash
+
+# -----------------------------
+# Misc / temporary
+# -----------------------------
+*.tmp
+*.bak
