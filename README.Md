@@ -12,4 +12,3 @@ Responsive personal portfolio built with HTML, CSS, and Bootstrap showcasing AI/
 
 ## Usage
 Open `index.html` in a browser to view the portfolio.
-
