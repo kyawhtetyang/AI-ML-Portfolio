@@ -1,27 +1,34 @@
 # -----------------------------
-# Python / Conda
+# Python / Bytecode
 # -----------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 
+# -----------------------------
 # Conda / virtual environments
+# -----------------------------
 # Do NOT commit your env folders
 env/
 ENV/
 .venv/
 venv/
 *.env
-# specific Conda environments
+
+# Specific Conda environments (example)
 tf/
 fk/
 am/
 gm/
 
+# -----------------------------
 # Jupyter Notebook checkpoints
+# -----------------------------
 .ipynb_checkpoints/
 
+# -----------------------------
 # Logs
+# -----------------------------
 *.log
 
 # -----------------------------
@@ -61,7 +68,7 @@ __install/
 __install/.build_hash
 
 # -----------------------------
-# Misc / temporary
+# Misc / temporary files
 # -----------------------------
 *.tmp
 *.bak
