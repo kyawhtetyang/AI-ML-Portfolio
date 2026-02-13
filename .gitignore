@@ -1,74 +1,24 @@
-# -----------------------------
-# Python / Bytecode
-# -----------------------------
-__pycache__/
-*.py[cod]
-*$py.class
-
-# -----------------------------
-# Conda / virtual environments
-# -----------------------------
-# Do NOT commit your env folders
-env/
-ENV/
-.venv/
-venv/
-*.env
-
-# Specific Conda environments (example)
-tf/
-fk/
-am/
-gm/
-
-# -----------------------------
-# Jupyter Notebook checkpoints
-# -----------------------------
-.ipynb_checkpoints/
-
-# -----------------------------
 # Logs
-# -----------------------------
+logs
 *.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# -----------------------------
-# OS generated files
-# -----------------------------
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-Thumbs.db
-
-# -----------------------------
-# IDE / editor folders
-# -----------------------------
-.vscode/
-.idea/
-
-# -----------------------------
-# ML / AI outputs
-# -----------------------------
-models/
-*.h5
-*.pt
-*.pkl
-*.joblib
-
-# -----------------------------
-# Data files
-# -----------------------------
-# Ignore large datasets but keep small sample/demo data
-data/*
-!data/sample_*.csv
-!data/sample_*.json
-!data/sample_*.txt
-
-# -----------------------------
-# Automation / install
-# -----------------------------
-__install/
-__install/.build_hash
-
-# -----------------------------
-# Misc / temporary files
-# -----------------------------
-*.tmp
-*.bak
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

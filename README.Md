@@ -1,27 +1,20 @@
-# Kyaw Htet Portfolio (v1)
+<div align="center">
+<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+</div>
 
-Static portfolio site rebuilt with a product-style app frame (sidebar + searchable project grid + detail modal).
+# Run and deploy your AI Studio app
 
-## Focus
+This contains everything you need to run your app locally.
 
-- Emphasizes real shipped products, not placeholder demos
-- Flagship links:
-  - `https://music.kyawhtet.com`
-  - `https://files.kyawhtet.com`
-- Includes selected AI/ML and backend projects from this workspace
+View your app in AI Studio: https://ai.studio/apps/drive/1JUTn_kYtR6E88bEXtaY88LjRYE44dlrW
 
-## Structure
+## Run Locally
 
-- `index.html` single-page portfolio (HTML/CSS/JS)
-- `kyaw-htet.jpg` profile image asset
+**Prerequisites:**  Node.js
 
-## UI Model
 
-- Sidebar category filters (`All`, `Flagship`, `AI/ML`, `Backend`, `Automation`)
-- Search across project name/summary/stack
-- Project cards with direct actions (`Details`, `Live` where available)
-- Modal detail view with stack, highlights, and links
-
-## Usage
-
-Open `index.html` in a browser.
+1. Install dependencies:
+   `npm install`
+2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+3. Run the app:
+   `npm run dev`
