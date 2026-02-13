@@ -1,14 +1,27 @@
-# AI/ML Portfolio Website
+# Kyaw Htet Portfolio (v1)
 
-Responsive personal portfolio built with HTML, CSS, and Bootstrap showcasing AI/ML projects, skills, and experience.
+Static portfolio site rebuilt with a product-style app frame (sidebar + searchable project grid + detail modal).
 
-## Features
-- HTML, CSS, Bootstrap for responsive design
-- Sidebar navigation with sticky top toolbar
-- Dark/light mode toggle
-- Projects & skills section with badges
-- Experience timeline styled like LinkedIn
-- Contact info
+## Focus
+
+- Emphasizes real shipped products, not placeholder demos
+- Flagship links:
+  - `https://music.kyawhtet.com`
+  - `https://files.kyawhtet.com`
+- Includes selected AI/ML and backend projects from this workspace
+
+## Structure
+
+- `index.html` single-page portfolio (HTML/CSS/JS)
+- `kyaw-htet.jpg` profile image asset
+
+## UI Model
+
+- Sidebar category filters (`All`, `Flagship`, `AI/ML`, `Backend`, `Automation`)
+- Search across project name/summary/stack
+- Project cards with direct actions (`Details`, `Live` where available)
+- Modal detail view with stack, highlights, and links
 
 ## Usage
-Open `index.html` in a browser to view the portfolio.
+
+Open `index.html` in a browser.
