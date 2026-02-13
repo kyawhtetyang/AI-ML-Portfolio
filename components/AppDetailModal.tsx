@@ -1,7 +1,6 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useMemo } from 'react';
 import { AppInfo, Review } from '../types';
-import { generateAppInsights } from '../services/geminiService';
 
 interface AppDetailModalProps {
   app: AppInfo | null;
@@ -9,18 +8,16 @@ interface AppDetailModalProps {
 }
 
 export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) => {
-  const [insights, setInsights] = useState<{ editorial: string; reviews: Review[] } | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    if (app) {
-      setLoading(true);
-      setInsights(null);
-      generateAppInsights(app).then((data) => {
-        setInsights(data);
-        setLoading(false);
-      });
-    }
+  const insights = useMemo<{ editorial: string; reviews: Review[] } | null>(() => {
+    if (!app) return null;
+    return {
+      editorial: `${app.name} stands out with a polished UI, practical feature set, and reliable performance for daily use.`,
+      reviews: [
+        { author: 'Product Hunter', rating: 5, title: 'Clean and Useful', content: 'Great UX and thoughtful feature choices. It feels polished and fast.', date: '2 days ago' },
+        { author: 'Builder Notes', rating: 4, title: 'Strong Execution', content: 'Solid functionality with clear product direction. Looking forward to future updates.', date: '1 week ago' },
+        { author: 'Daily User', rating: 5, title: 'Excellent Experience', content: 'Easy to use and surprisingly powerful once you start exploring.', date: '2 weeks ago' }
+      ]
+    };
   }, [app]);
 
   if (!app) return null;
@@ -102,16 +99,9 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
                 <span className="bg-gradient-to-tr from-purple-500 to-blue-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">AI Insights</span>
                 <h3 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">Why We Love This</h3>
               </div>
-              {loading ? (
-                <div className="animate-pulse space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-full"></div>
-                  <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                </div>
-              ) : (
-                <p className="text-gray-700 italic font-medium">
-                  {insights?.editorial}
-                </p>
-              )}
+              <p className="text-gray-700 italic font-medium">
+                {insights?.editorial}
+              </p>
             </section>
 
             {/* Reviews Section */}
@@ -122,36 +112,30 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {loading ? (
-                   [1, 2, 3].map(i => (
-                    <div key={i} className="p-4 bg-gray-50 rounded-xl h-32 animate-pulse" />
-                   ))
-                ) : (
-                  insights?.reviews.map((review, idx) => (
-                    <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-bold text-sm truncate mr-2">{review.title}</h4>
-                        <span className="text-xs text-gray-400 whitespace-nowrap">{review.date}</span>
-                      </div>
-                      <div className="flex mb-2">
-                        {[...Array(5)].map((_, i) => (
-                          <svg 
-                            key={i} 
-                            className={`w-3 h-3 ${i < review.rating ? 'text-orange-400' : 'text-gray-300'}`} 
-                            fill="currentColor" 
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                        ))}
-                      </div>
-                      <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                        {review.content}
-                      </p>
-                      <p className="mt-3 text-[10px] text-gray-400 font-medium">By {review.author}</p>
+                {insights?.reviews.map((review, idx) => (
+                  <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
+                    <div className="flex justify-between items-start mb-2">
+                      <h4 className="font-bold text-sm truncate mr-2">{review.title}</h4>
+                      <span className="text-xs text-gray-400 whitespace-nowrap">{review.date}</span>
                     </div>
-                  ))
-                )}
+                    <div className="flex mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg 
+                          key={i} 
+                          className={`w-3 h-3 ${i < review.rating ? 'text-orange-400' : 'text-gray-300'}`} 
+                          fill="currentColor" 
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
+                      {review.content}
+                    </p>
+                    <p className="mt-3 text-[10px] text-gray-400 font-medium">By {review.author}</p>
+                  </div>
+                ))}
               </div>
             </section>
           </div>
