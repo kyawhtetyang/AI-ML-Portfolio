@@ -1,6 +1,6 @@
 # Kyaw Htet Portfolio (v1)
 
-Personal portfolio web app showcasing AI/ML, Python, web, and automation projects.
+Personal portfolio web app showcasing AI/ML, Python, desktop, and web projects.
 
 ## Tech Stack
 
@@ -54,5 +54,10 @@ For production on Vercel, also set:
 
 ## Notes
 
+- Projects include filters: `Featured`, `All`, `AI/ML`, `Python`, `Web App`, `Desktop App`.
 - Project cards open a modal with: `Overview`, `Tech Stack`, `Outcome`.
-- Modal `Open` button redirects to project URL.
+- Modal buttons:
+  - `Open` for live demo/website (when available)
+  - `GitHub` for source code
+  - `Download` for direct installer (when available)
+- Contact is handled via a modal from the Discover page (no separate Contact tab).

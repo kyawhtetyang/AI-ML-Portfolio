@@ -1,7 +1,6 @@
 export enum Category {
   Discover = 'Discover',
   Projects = 'Projects',
-  Contact = 'Contact',
   Chat = 'Chat'
 }
 

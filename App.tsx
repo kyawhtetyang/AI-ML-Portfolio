@@ -35,6 +35,7 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProjectFilter, setSelectedProjectFilter] = useState<ProjectFilter>('Featured');
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
   const [contactProjectType, setContactProjectType] = useState('AI/ML Project');
@@ -45,7 +46,6 @@ const App: React.FC = () => {
     message: ''
   });
   const isDiscoverPage = selectedCategory === Category.Discover;
-  const isContactPage = selectedCategory === Category.Contact;
   const isChatPage = selectedCategory === Category.Chat;
   const profile = {
     email: 'kyaw.htet.yang@gmail.com',
@@ -210,12 +210,6 @@ const App: React.FC = () => {
             onClick={setSelectedCategory}
             icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h8v13H3V7zm10-3h8v16h-8V4z" /></svg>}
           />
-          <SidebarItem 
-            category={Category.Contact} 
-            active={selectedCategory === Category.Contact} 
-            onClick={setSelectedCategory}
-            icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
-          />
           <button
             onClick={() => setSelectedCategory(Category.Chat)}
             className={`w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group ${
@@ -257,7 +251,7 @@ const App: React.FC = () => {
             </div>
           </div>
           
-          {!isDiscoverPage && !isContactPage && !isChatPage && (
+          {!isDiscoverPage && !isChatPage && (
             <div className="relative">
               <input 
                 type="text"
@@ -296,6 +290,13 @@ const App: React.FC = () => {
                   <a href={profile.resume} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-[#fa233b] text-white text-sm font-semibold px-4 py-2 hover:bg-[#d91e33] transition-colors">
                     Resume
                   </a>
+                  <button
+                    type="button"
+                    onClick={() => setIsContactModalOpen(true)}
+                    className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors"
+                  >
+                    Contact
+                  </button>
                 </div>
               </div>
 
@@ -360,77 +361,16 @@ const App: React.FC = () => {
               <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Contact</p>
               <h3 className="text-base font-bold text-gray-900">Want to work together?</h3>
               <p className="mt-3 text-sm text-gray-600">
-                Open the Contact tab to send your project details.
+                Send your project brief directly from here.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 <button
                   type="button"
-                  onClick={() => setSelectedCategory(Category.Contact)}
+                  onClick={() => setIsContactModalOpen(true)}
                   className="inline-flex items-center rounded-xl bg-[#fa233b] text-white text-sm font-semibold px-4 py-2 hover:bg-[#d91e33] transition-colors"
                 >
-                  Go to Contact
+                  Contact Now
                 </button>
-              </div>
-            </section>
-          </div>
-        ) : isContactPage ? (
-          <div className="pt-14 md:pt-16 pb-20">
-            <section className="space-y-8">
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Project Brief</h4>
-                <div className="bg-white border border-black/10 rounded-2xl p-6 md:p-7">
-                <form onSubmit={handleContactSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <label className="flex flex-col gap-2">
-                    <span className="text-sm font-medium text-[#1d1d1f]">Name</span>
-                    <input type="text" value={contactName} onChange={(e) => { setContactName(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Your name" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
-                  </label>
-                  <label className="flex flex-col gap-2">
-                    <span className="text-sm font-medium text-[#1d1d1f]">Email</span>
-                    <input type="email" required value={contactEmail} onChange={(e) => { setContactEmail(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="you@example.com" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
-                  </label>
-                  <label className="flex flex-col gap-2 md:col-span-2">
-                    <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
-                    <select value={contactProjectType} onChange={(e) => { setContactProjectType(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
-                      <option>AI/ML Project</option>
-                      <option>Web App</option>
-                      <option>Mobile App</option>
-                      <option>Automation / Workflow</option>
-                      <option>Consulting</option>
-                      <option>Other</option>
-                    </select>
-                  </label>
-                  <label className="flex flex-col gap-2 md:col-span-2">
-                    <span className="text-sm font-medium text-[#1d1d1f]">Message</span>
-                    <textarea rows={6} required value={contactMessage} onChange={(e) => { setContactMessage(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Tell me about your goals, expected output, and timeline." className="bg-white/95 border border-black/10 rounded-lg px-4 py-3 text-sm outline-none resize-y" />
-                  </label>
-                  <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
-                    <p className="text-xs text-[#6e6e73]">For urgent requests, email me directly.</p>
-                    <div className="flex items-center gap-3">
-                      <button type="submit" disabled={isSubmittingContact} className="inline-flex items-center rounded-lg bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors disabled:opacity-60 disabled:cursor-not-allowed">{isSubmittingContact ? 'Sending...' : 'Send Message'}</button>
-                    </div>
-                  </div>
-                  {contactSubmitState.type !== 'idle' && (
-                    <p className={`md:col-span-2 text-sm ${contactSubmitState.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
-                      {contactSubmitState.message}
-                    </p>
-                  )}
-                </form>
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Direct Channels</h4>
-                <div className="flex flex-wrap gap-3">
-                  <a href={profile.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
-                    LinkedIn
-                  </a>
-                  <a href={profile.github} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
-                    GitHub
-                  </a>
-                  <a href={profile.resume} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
-                    Resume
-                  </a>
-                </div>
               </div>
             </section>
           </div>
@@ -473,7 +413,7 @@ const App: React.FC = () => {
                   </button>
                 </div>
                 <p className="text-[11px] text-[#6e6e73] mt-2">
-                  Beta preview. For guaranteed response, use Contact tab.
+                  Beta preview. For guaranteed response, use Contact on Discover.
                 </p>
               </div>
             </div>
@@ -529,13 +469,71 @@ const App: React.FC = () => {
         <button onClick={() => setSelectedCategory(Category.Projects)} className={`p-2 rounded-full ${selectedCategory === Category.Projects ? 'text-[#fa233b]' : 'text-gray-400'}`}>
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h8v13H3V7zm10-3h8v16h-8V4z" /></svg>
         </button>
-        <button onClick={() => setSelectedCategory(Category.Contact)} className={`p-2 rounded-full ${selectedCategory === Category.Contact ? 'text-[#fa233b]' : 'text-gray-400'}`}>
-          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-        </button>
         <button onClick={() => setSelectedCategory(Category.Chat)} className={`p-2 rounded-full ${selectedCategory === Category.Chat ? 'text-[#fa233b]' : 'text-gray-400'}`}>
           <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h8M8 14h5m8-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
         </button>
       </nav>
+
+      {isContactModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300">
+          <div
+            className="absolute inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setIsContactModalOpen(false)}
+          />
+          <div className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300">
+            <div className="flex items-center justify-between px-6 py-4 md:px-10 md:py-6 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100">
+              <div className="text-left">
+                <h2 className="text-xl font-bold text-gray-900">Contact</h2>
+                <p className="text-sm text-gray-500">Share your project brief.</p>
+              </div>
+              <button
+                onClick={() => setIsContactModalOpen(false)}
+                className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto p-6 md:p-10 text-left">
+              <form onSubmit={handleContactSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium text-[#1d1d1f]">Name</span>
+                  <input type="text" value={contactName} onChange={(e) => { setContactName(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Your name" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                </label>
+                <label className="flex flex-col gap-2">
+                  <span className="text-sm font-medium text-[#1d1d1f]">Email</span>
+                  <input type="email" required value={contactEmail} onChange={(e) => { setContactEmail(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="you@example.com" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                </label>
+                <label className="flex flex-col gap-2 md:col-span-2">
+                  <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
+                  <select value={contactProjectType} onChange={(e) => { setContactProjectType(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
+                    <option>AI/ML Project</option>
+                    <option>Web App</option>
+                    <option>Mobile App</option>
+                    <option>Automation / Workflow</option>
+                    <option>Consulting</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+                <label className="flex flex-col gap-2 md:col-span-2">
+                  <span className="text-sm font-medium text-[#1d1d1f]">Message</span>
+                  <textarea rows={6} required value={contactMessage} onChange={(e) => { setContactMessage(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Tell me about your goals, expected output, and timeline." className="bg-white/95 border border-black/10 rounded-lg px-4 py-3 text-sm outline-none resize-y" />
+                </label>
+                <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
+                  <p className="text-xs text-[#6e6e73]">For urgent requests, email me directly.</p>
+                  <button type="submit" disabled={isSubmittingContact} className="inline-flex items-center rounded-lg bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors disabled:opacity-60 disabled:cursor-not-allowed">{isSubmittingContact ? 'Sending...' : 'Send Message'}</button>
+                </div>
+                {contactSubmitState.type !== 'idle' && (
+                  <p className={`md:col-span-2 text-sm ${contactSubmitState.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                    {contactSubmitState.message}
+                  </p>
+                )}
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* App Detail Modal */}
       <AppDetailModal 
