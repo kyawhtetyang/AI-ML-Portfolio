@@ -4,7 +4,36 @@ import { Category, AppInfo } from './types';
 import { APPS } from './constants';
 import { AppCard } from './components/AppCard';
 import { AppDetailModal } from './components/AppDetailModal';
-import profilePhoto from './docs/kyawhtet.jpg';
+import profilePhoto from './docs/09_AIML_Portfolio.jpg';
+
+
+type ProjectFilter = 'All' | 'AI/ML' | 'Python' | 'Web App' | 'Automation';
+
+const PROJECT_FILTERS: ProjectFilter[] = ['All', 'AI/ML', 'Python', 'Web App', 'Automation'];
+
+const getProjectFilterType = (app: AppInfo): ProjectFilter => {
+  const text = `${app.name} ${app.subtitle} ${app.description}`.toLowerCase();
+
+  if (
+    text.includes('ml') ||
+    text.includes('ai') ||
+    text.includes('nlp') ||
+    text.includes('cnn') ||
+    text.includes('lstm') ||
+    text.includes('sbert') ||
+    text.includes('recommender') ||
+    text.includes('regression')
+  ) {
+    return 'AI/ML';
+  }
+  if (text.includes('automation') || text.includes('workflow') || text.includes('organizer') || text.includes('inventory')) {
+    return 'Automation';
+  }
+  if (text.includes('flask') || text.includes('fastapi') || text.includes('api') || text.includes('backend')) {
+    return 'Python';
+  }
+  return 'Web App';
+};
 
 const SidebarItem: React.FC<{ 
   category: Category; 
@@ -16,12 +45,13 @@ const SidebarItem: React.FC<{
     onClick={() => onClick(category)}
     className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group ${
       active 
-        ? 'bg-[#fa233b] text-white shadow-lg shadow-red-200' 
-        : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+        ? 'bg-black/5 text-[#1d1d1f]' 
+        : 'text-gray-500 hover:bg-black/5 hover:text-[#1d1d1f]'
     }`}
   >
-    <span className={`${active ? 'text-white' : 'text-gray-400 group-hover:text-[#fa233b]'}`}>
+    <span className={`${active ? 'text-[#1d1d1f]' : 'text-gray-400 group-hover:text-[#1d1d1f]'}`}>
       {icon}
+    
     </span>
     <span className="text-sm font-semibold">{category}</span>
   </button>
@@ -30,10 +60,19 @@ const SidebarItem: React.FC<{
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>(Category.Discover);
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedProjectFilter, setSelectedProjectFilter] = useState<ProjectFilter>('All');
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
   const isDiscoverPage = selectedCategory === Category.Discover;
   const isContactPage = selectedCategory === Category.Contact;
   const isChatPage = selectedCategory === Category.Chat;
+  const profile = {
+    email: 'kyaw.htet.yang@gmail.com',
+    linkedin: 'https://linkedin.com/in/kyawhtetyang',
+    github: 'https://github.com/kyawhtetyang',
+    resume: 'https://u.pcloud.link/publink/show?code=kZze2M5ZWWU8Wv1GxPfEbPPJLkhDuB6yEt7k',
+    phone: '+84 325 769 834',
+    location: 'Danang, Vietnam'
+  };
 
   const chatSeedMessages = [
     {
@@ -79,23 +118,20 @@ const App: React.FC = () => {
 
   const filteredApps = useMemo(() => {
     let list = APPS;
-    if (selectedCategory === Category.Projects) {
-      list = APPS;
-    } else if (
-      selectedCategory !== Category.Discover &&
-      selectedCategory !== Category.Contact &&
-      selectedCategory !== Category.Chat
-    ) {
-      list = list.filter(app => app.category === selectedCategory);
+
+    if (selectedCategory === Category.Projects && selectedProjectFilter !== 'All') {
+      list = list.filter(app => getProjectFilterType(app) === selectedProjectFilter);
     }
+
     if (searchQuery) {
-      list = list.filter(app => 
+      list = list.filter(app =>
         app.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         app.subtitle.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
+
     return list;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, selectedProjectFilter]);
 
   const handleAppClick = (app: AppInfo) => {
     setSelectedApp(app);
@@ -106,14 +142,19 @@ const App: React.FC = () => {
       {/* Sidebar - Desktop Only */}
       <aside className="hidden lg:flex flex-col w-64 glass border-r border-black/5 p-6 fixed inset-y-0 z-20">
         <div className="mb-10 pl-2">
-          <h1 className="text-2xl font-bold tracking-tight flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="text-2xl font-bold tracking-tight flex items-center gap-2 hover:opacity-85 transition-opacity"
+            aria-label="Reload page"
+          >
             <img
               src={profilePhoto}
               alt="Kyaw Htet"
               className="w-8 h-8 rounded-full object-cover border border-gray-200"
             />
             Kyaw Htet
-          </h1>
+          </button>
         </div>
 
         <nav className="space-y-1">
@@ -139,13 +180,12 @@ const App: React.FC = () => {
             onClick={() => setSelectedCategory(Category.Chat)}
             className={`w-full flex items-center justify-between gap-3 px-4 py-2.5 rounded-lg transition-all duration-200 group ${
               selectedCategory === Category.Chat
-                ? 'bg-[#fa233b] text-white shadow-lg shadow-red-200'
-                : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-black/5 text-[#1d1d1f]'
+                : 'text-gray-500 hover:bg-black/5 hover:text-[#1d1d1f]'
             }`}
           >
             <span className="flex items-center gap-3 min-w-0">
-              <span className={`${selectedCategory === Category.Chat ? 'text-white' : 'text-gray-400 group-hover:text-[#fa233b]'}`}>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <span className={`${selectedCategory === Category.Chat ? 'text-[#1d1d1f]' : 'text-gray-400 group-hover:text-[#1d1d1f]'}`}><svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h8M8 14h5m8-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </span>
@@ -153,8 +193,8 @@ const App: React.FC = () => {
             </span>
             <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${
               selectedCategory === Category.Chat
-                ? 'bg-white text-[#fa233b]'
-                : 'bg-[#fa233b]/10 text-[#fa233b]'
+                ? 'bg-[#1d1d1f] text-white'
+                : 'bg-black/10 text-[#1d1d1f]'
             }`}>
               Beta
             </span>
@@ -164,26 +204,17 @@ const App: React.FC = () => {
       </aside>
 
       {/* Main Content Area */}
-      <main className="flex-1 lg:ml-64 p-4 md:p-8 lg:p-12">
-        <header className="sticky top-4 z-10 glass border border-black/5 rounded-2xl px-4 py-3 md:px-6 md:py-4 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+      <main className="flex-1 lg:ml-64 pt-0 px-4 pb-4 md:px-6 md:pb-6 lg:px-6 lg:pb-8">
+        <header className="fixed top-0 left-0 right-0 lg:left-64 z-40 px-4 md:px-6 lg:px-6 h-12 md:h-14 bg-white border-b border-black/10 flex items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-3">
-              <h2 className="text-3xl font-extrabold text-[#1d1d1f] tracking-tight">{selectedCategory}</h2>
+              <h2 className="text-lg md:text-xl font-semibold text-[#1d1d1f] tracking-tight">{selectedCategory}</h2>
               {isChatPage && (
                 <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#fa233b]/10 text-[#fa233b]">
                   Beta
                 </span>
               )}
             </div>
-            <p className="text-[#6e6e73] text-sm mt-1">
-              {isDiscoverPage
-                ? 'Intro, skills, featured work, and ways to contact me.'
-                : isContactPage
-                  ? 'Choose a quick way to reach me or send a short message.'
-                  : isChatPage
-                    ? 'Beta preview of a conversational assistant interface.'
-                    : 'Browse all projects in one place.'}
-            </p>
           </div>
           
           {!isDiscoverPage && !isContactPage && !isChatPage && (
@@ -193,7 +224,7 @@ const App: React.FC = () => {
                 placeholder="Search Apps..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full md:w-64 lg:w-80 bg-black/5 border-none rounded-xl py-2 px-10 focus:ring-2 focus:ring-[#fa233b] transition-all outline-none text-sm"
+                className="w-full md:w-64 lg:w-80 bg-black/5 border-none rounded-xl py-2 px-10 transition-all outline-none text-sm"
               />
               <svg className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -203,38 +234,65 @@ const App: React.FC = () => {
         </header>
 
         {isDiscoverPage ? (
-          <div className="space-y-8 pb-24">
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Intro</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                Hi, I build AI and software products that solve real business problems.
-              </h3>
-              <p className="mt-4 text-sm md:text-base text-gray-600 max-w-3xl">
-                I focus on practical machine learning systems, full-stack product delivery, and clean user experiences.
-                This page highlights my core skills and selected projects.
-              </p>
+          <div className="pt-14 md:pt-16 space-y-8 pb-20">
+            <section>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Intro</p>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              <div className="lg:col-span-8 bg-white border border-black/10 rounded-2xl p-6 md:p-7">
+                <h3 className="text-base font-bold text-gray-900 leading-tight">
+                  Kyaw Htet | AI/ML Engineer & Product Builder
+                </h3>
+                <p className="mt-4 text-sm text-gray-600 max-w-3xl">
+                  I combine MBA-level business understanding with hands-on engineering experience in Python, automation, NLP, and machine learning.
+                  This portfolio highlights practical projects, technical strengths, and ways to collaborate.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-3">
+                  <a href={profile.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                    LinkedIn
+                  </a>
+                  <a href={profile.github} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                    GitHub
+                  </a>
+                  <a href={profile.resume} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-[#fa233b] text-white text-sm font-semibold px-4 py-2 hover:bg-[#d91e33] transition-colors">
+                    Resume
+                  </a>
+                </div>
+              </div>
+
+              <div className="lg:col-span-4 bg-white border border-black/10 rounded-2xl p-6 md:p-7">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-center justify-between border-b border-black/10 pb-2">
+                    <span className="text-[#6e6e73]">Role</span>
+                    <span className="font-semibold text-[#1d1d1f]">AI/ML Junior Developer</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-black/10 pb-2">
+                    <span className="text-[#6e6e73]">Address</span>
+                    <span className="font-semibold text-[#1d1d1f]">{profile.location}</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-black/10 pb-2">
+                    <span className="text-[#6e6e73]">Phone</span>
+                    <span className="font-semibold text-[#1d1d1f]">{profile.phone}</span>
+                  </li>
+                  <li className="flex items-center justify-between border-b border-black/10 pb-2">
+                    <span className="text-[#6e6e73]">Status</span>
+                    <span className="font-semibold text-[#1d1d1f]">Open to Collaboration</span>
+                  </li>
+                  <li className="flex items-center justify-between">
+                    <span className="text-[#6e6e73]">Email</span>
+                    <span className="font-semibold text-[#1d1d1f] truncate ml-4">{profile.email}</span>
+                  </li>
+                </ul>
+              </div>
+              </div>
             </section>
 
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-gray-900">Skills</h3>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-                {portfolioSkills.map((skill) => (
-                  <div key={skill} className="bg-white/90 border border-black/5 rounded-xl px-3 py-2 text-sm font-medium text-[#1d1d1f] text-center">
-                    {skill}
-                  </div>
-                ))}
-              </div>
-            </section>
+            <div className="border-t border-black/10"></div>
 
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-xl font-bold text-gray-900">Featured Work</h3>
-              </div>
+            <section>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Featured Work</p>
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {featuredWork.map((project) => (
-                  <article key={project.title} className="glass border border-black/5 rounded-2xl p-5">
+                  <article key={project.title} className="bg-white border border-black/10 rounded-2xl p-5">
                     <h4 className="text-base font-bold text-gray-900">{project.title}</h4>
                     <p className="mt-2 text-sm text-gray-600 leading-relaxed">{project.summary}</p>
                     <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-gray-500">{project.stack}</p>
@@ -243,10 +301,25 @@ const App: React.FC = () => {
               </div>
             </section>
 
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Next</p>
-              <h3 className="text-2xl font-bold text-gray-900">Want to work together?</h3>
-              <p className="mt-3 text-sm md:text-base text-gray-600">
+            <div className="border-t border-black/10"></div>
+
+            <section>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Skills</p>
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+                {portfolioSkills.map((skill) => (
+                  <div key={skill} className="bg-white border border-black/10 rounded-xl px-3 py-2 text-sm font-semibold text-[#1d1d1f] text-center">
+                    {skill}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <div className="border-t border-black/10"></div>
+
+            <section>
+              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Contact</p>
+              <h3 className="text-base font-bold text-gray-900">Want to work together?</h3>
+              <p className="mt-3 text-sm text-gray-600">
                 Open the Contact tab to send your project details.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
@@ -261,74 +334,76 @@ const App: React.FC = () => {
             </section>
           </div>
         ) : isContactPage ? (
-          <div className="space-y-8 pb-24">
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Contact</p>
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                Let&apos;s build something useful together.
-              </h3>
-              <p className="mt-3 text-sm md:text-base text-gray-600 max-w-3xl">
-                I usually reply within 24 hours. Use a quick action below or send your project details with the form.
-              </p>
-            </section>
-
-            <section>
-              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                <a href="mailto:yourname@example.com" className="glass border border-black/5 rounded-2xl p-5 hover:border-[#fa233b]/40 transition-colors">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b]">Email</p>
-                  <p className="mt-2 text-base font-semibold text-[#1d1d1f]">yourname@example.com</p>
-                </a>
-                <a href="#" className="glass border border-black/5 rounded-2xl p-5 hover:border-[#fa233b]/40 transition-colors">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b]">LinkedIn</p>
-                  <p className="mt-2 text-base font-semibold text-[#1d1d1f]">Connect professionally</p>
-                </a>
-                <a href="#" className="glass border border-black/5 rounded-2xl p-5 hover:border-[#fa233b]/40 transition-colors">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b]">GitHub</p>
-                  <p className="mt-2 text-base font-semibold text-[#1d1d1f]">View source projects</p>
-                </a>
-                <a href="#" className="glass border border-black/5 rounded-2xl p-5 hover:border-[#fa233b]/40 transition-colors">
-                  <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b]">Book a Call</p>
-                  <p className="mt-2 text-base font-semibold text-[#1d1d1f]">Schedule a 30-min chat</p>
-                </a>
+          <div className="pt-14 md:pt-16 pb-20">
+            <section className="mb-8">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Contact</p>
+              <div className="bg-white border border-black/10 rounded-2xl p-6 md:p-7">
+                <h3 className="text-base font-bold text-[#1d1d1f]">Let's build something useful together.</h3>
+                <p className="mt-2 text-sm text-[#6e6e73] max-w-2xl">Share your project goal and timeline. I usually reply within 24 hours.</p>
               </div>
             </section>
 
-            <section className="glass border border-black/5 rounded-3xl p-6 md:p-8">
-              <h3 className="text-xl font-bold text-[#1d1d1f]">Send a Message</h3>
-              <form className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm font-medium text-[#1d1d1f]">Name</span>
-                  <input type="text" placeholder="Your name" className="bg-white/90 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#fa233b]" />
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm font-medium text-[#1d1d1f]">Email</span>
-                  <input type="email" placeholder="you@example.com" className="bg-white/90 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#fa233b]" />
-                </label>
-                <label className="flex flex-col gap-2">
-                  <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
-                  <select className="bg-white/90 border border-black/10 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-[#fa233b]">
-                    <option>AI/ML App</option>
-                    <option>Web Application</option>
-                    <option>Consulting</option>
-                    <option>Other</option>
-                  </select>
-                </label>
-                <label className="flex flex-col gap-2 md:col-span-2">
-                  <span className="text-sm font-medium text-[#1d1d1f]">Message</span>
-                  <textarea rows={5} placeholder="Tell me about your goals, timeline, and requirements." className="bg-white/90 border border-black/10 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#fa233b] resize-y" />
-                </label>
-                <div className="md:col-span-2">
-                  <button type="button" className="inline-flex items-center rounded-xl bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors">
-                    Send Message
-                  </button>
+            <section className="space-y-8">
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Project Brief</h4>
+                <div className="bg-white border border-black/10 rounded-2xl p-6 md:p-7">
+                <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium text-[#1d1d1f]">Name</span>
+                    <input type="text" placeholder="Your name" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                  </label>
+                  <label className="flex flex-col gap-2">
+                    <span className="text-sm font-medium text-[#1d1d1f]">Email</span>
+                    <input type="email" placeholder={profile.email} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                  </label>
+                  <label className="flex flex-col gap-2 md:col-span-2">
+                    <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
+                    <select className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
+                      <option>AI/ML Project</option>
+                      <option>Web App</option>
+                      <option>Mobile App</option>
+                      <option>Automation / Workflow</option>
+                      <option>Consulting</option>
+                      <option>Other</option>
+                    </select>
+                  </label>
+                  <label className="flex flex-col gap-2 md:col-span-2">
+                    <span className="text-sm font-medium text-[#1d1d1f]">Message</span>
+                    <textarea rows={6} placeholder="Tell me about your goals, expected output, and timeline." className="bg-white/95 border border-black/10 rounded-lg px-4 py-3 text-sm outline-none resize-y" />
+                  </label>
+                  <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
+                    <p className="text-xs text-[#6e6e73]">For urgent requests, email me directly.</p>
+                    <div className="flex items-center gap-3">
+                      <a href={`mailto:${profile.email}`} className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                        Email
+                      </a>
+                      <button type="button" className="inline-flex items-center rounded-lg bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors">Send Message</button>
+                    </div>
+                  </div>
+                </form>
                 </div>
-              </form>
+              </div>
+
+              <div>
+                <h4 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Direct Channels</h4>
+                <div className="flex flex-wrap gap-3">
+                  <a href={profile.linkedin} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                    LinkedIn
+                  </a>
+                  <a href={profile.github} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                    GitHub
+                  </a>
+                  <a href={profile.resume} target="_blank" rel="noreferrer" className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
+                    Resume
+                  </a>
+                </div>
+              </div>
             </section>
           </div>
         ) : isChatPage ? (
-          <div className="pb-40 lg:pb-32">
-            <section className="glass border border-black/5 rounded-3xl h-[68vh] min-h-[520px] flex flex-col overflow-hidden">
-              <div className="flex-1 overflow-y-auto p-5 pb-28 space-y-4 bg-white/40">
+          <div className="pt-14 md:pt-16 pb-36 lg:pb-28">
+            <section className="h-[68vh] min-h-[520px] flex flex-col overflow-hidden">
+              <div className="flex-1 overflow-y-auto p-0 pb-28 space-y-4">
                 {chatSeedMessages.map((message, index) => (
                   <div
                     key={index}
@@ -349,12 +424,12 @@ const App: React.FC = () => {
             </section>
 
             <div className="fixed left-0 right-0 bottom-16 lg:bottom-0 lg:left-64 z-40 px-4 md:px-8 lg:px-12 pb-3 lg:pb-4">
-              <div className="glass border border-black/10 rounded-2xl p-3 md:p-4">
+              <div className="border-t border-black/10 pt-3 md:pt-4">
                 <div className="flex items-end gap-3">
                   <textarea
                     rows={1}
                     placeholder="Type your message..."
-                    className="flex-1 bg-white border border-black/10 rounded-2xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-[#fa233b] resize-none"
+                    className="flex-1 bg-white border border-black/10 rounded-2xl px-4 py-3 text-sm outline-none resize-none"
                   />
                   <button
                     type="button"
@@ -371,14 +446,37 @@ const App: React.FC = () => {
           </div>
         ) : (
           <>
-            <section className="mb-12">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gray-900">
-                  {searchQuery ? `Search results for "${searchQuery}"` : 'Featured Projects'}
-                </h3>
-                <button className="text-[#fa233b] font-medium hover:underline text-sm">View All</button>
+            <section className="pt-14 md:pt-16 mb-10">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-0">
+                  {searchQuery ? `Search Results for "${searchQuery}"` : 'Featured Projects'}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSelectedProjectFilter('All')}
+                  className="text-[#fa233b] font-semibold hover:underline text-sm"
+                >
+                  View All
+                </button>
               </div>
-              
+
+              <div className="flex flex-wrap gap-2 mb-6">
+                {PROJECT_FILTERS.map((filter) => (
+                  <button
+                    key={filter}
+                    type="button"
+                    onClick={() => setSelectedProjectFilter(filter)}
+                    className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition-colors ${
+                      selectedProjectFilter === filter
+                        ? 'bg-[#fa233b] text-white'
+                        : 'bg-white border border-black/10 text-[#1d1d1f] hover:bg-gray-50'
+                    }`}
+                  >
+                    {filter}
+                  </button>
+                ))}
+              </div>
+
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-x-6 gap-y-10">
                 {filteredApps.map(app => (
                   <AppCard key={app.id} app={app} onClick={handleAppClick} />

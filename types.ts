@@ -1,16 +1,8 @@
-
 export enum Category {
   Discover = 'Discover',
   Projects = 'Projects',
   Contact = 'Contact',
-  Chat = 'Chat',
-  Arcade = 'Arcade',
-  Create = 'Create',
-  Work = 'Work',
-  Play = 'Play',
-  Develop = 'Develop',
-  Social = 'Social',
-  Entertainment = 'Entertainment'
+  Chat = 'Chat'
 }
 
 export interface AppInfo {
