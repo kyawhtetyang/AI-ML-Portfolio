@@ -167,7 +167,7 @@ const App: React.FC = () => {
       setContactEmail('');
       setContactProjectType('AI/ML');
       setContactMessage('');
-    } catch (_error) {
+    } catch {
       setContactSubmitState({
         type: 'error',
         message: 'Unable to send right now. Please try again or use the Email button.'
@@ -268,9 +268,8 @@ const App: React.FC = () => {
         </header>
 
         {isDiscoverPage ? (
-          <div className="pt-14 md:pt-16 space-y-8 pb-20">
+          <div className="pt-16 md:pt-20 space-y-8 pb-20">
             <section>
-              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Intro</p>
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               <div className="lg:col-span-8 bg-white border border-black/10 rounded-2xl p-6 md:p-7">
                 <h3 className="text-base font-bold text-gray-900 leading-tight">
@@ -375,7 +374,7 @@ const App: React.FC = () => {
             </section>
           </div>
         ) : isChatPage ? (
-          <div className="pt-14 md:pt-16 pb-36 lg:pb-28">
+          <div className="pt-16 md:pt-20 pb-36 lg:pb-28">
             <section className="h-[68vh] min-h-[520px] flex flex-col overflow-hidden">
               <div className="flex-1 overflow-y-auto p-0 pb-28 space-y-4">
                 {chatSeedMessages.map((message, index) => (
@@ -420,7 +419,7 @@ const App: React.FC = () => {
           </div>
         ) : (
           <>
-            <section className="pt-14 md:pt-16 mb-10">
+            <section className="pt-16 md:pt-20 mb-10">
               {searchQuery && (
                 <div className="mb-4">
                   <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-0">
@@ -446,7 +445,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="grid [grid-template-columns:repeat(auto-fill,minmax(140px,140px))] justify-start gap-x-5 gap-y-8">
+              <div className="grid [grid-template-columns:repeat(auto-fill,minmax(132px,132px))] sm:[grid-template-columns:repeat(auto-fill,minmax(140px,140px))] justify-start gap-x-4 sm:gap-x-5 gap-y-8">
                 {filteredApps.map(app => (
                   <AppCard key={app.id} app={app} onClick={handleAppClick} />
                 ))}
