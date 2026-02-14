@@ -1,0 +1,50 @@
+# Kyaw Htet Portfolio (v1)
+
+Personal portfolio web app showcasing AI/ML, Python, web, and automation projects.
+
+## Tech Stack
+
+- React + TypeScript
+- Vite
+- Utility-first styling
+
+## Run Locally
+
+Prerequisite: Node.js 18+
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+
+## Contact Form (Formspree)
+
+The `Send Message` button posts directly to Formspree.
+
+1. Create a form in Formspree and copy your endpoint URL.
+2. Set the endpoint in `.env.local`:
+
+```bash
+VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/your_form_id
+```
+
+3. Restart dev server after editing env vars.
+
+## Deployment
+
+Recommended: deploy with Vercel from `main`.
+
+For production on Vercel, also set:
+
+- `VITE_FORMSPREE_ENDPOINT`
+
+## Notes
+
+- Project cards open a modal with: `Overview`, `Tech Stack`, `Outcome`.
+- Modal `Open` button redirects to project URL.
