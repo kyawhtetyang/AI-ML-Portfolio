@@ -80,7 +80,7 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
 
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Tech Stack</h3>
-              <p className="text-gray-600 leading-relaxed text-sm">{app.stack}</p>
+              <p className="text-gray-600 leading-relaxed text-sm whitespace-pre-line">{app.stack}</p>
             </section>
 
             <section>

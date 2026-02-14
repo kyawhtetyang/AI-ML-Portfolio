@@ -15,6 +15,10 @@ export const getProjectFilterType = (app: AppInfo): ProjectFilter => {
     return 'Python';
   }
 
+  if (text.includes('music app')) {
+    return 'Web App';
+  }
+
   if (text.includes('files organizer') || text.includes('file organizer')) {
     return 'Desktop App';
   }

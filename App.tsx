@@ -38,7 +38,7 @@ const App: React.FC = () => {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
-  const [contactProjectType, setContactProjectType] = useState('AI/ML Project');
+  const [contactProjectType, setContactProjectType] = useState('AI/ML');
   const [contactMessage, setContactMessage] = useState('');
   const [isSubmittingContact, setIsSubmittingContact] = useState(false);
   const [contactSubmitState, setContactSubmitState] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
@@ -165,7 +165,7 @@ const App: React.FC = () => {
       });
       setContactName('');
       setContactEmail('');
-      setContactProjectType('AI/ML Project');
+      setContactProjectType('AI/ML');
       setContactMessage('');
     } catch (_error) {
       setContactSubmitState({
@@ -508,11 +508,10 @@ const App: React.FC = () => {
                 <label className="flex flex-col gap-2 md:col-span-2">
                   <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
                   <select value={contactProjectType} onChange={(e) => { setContactProjectType(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
-                    <option>AI/ML Project</option>
+                    <option>AI/ML</option>
+                    <option>Python</option>
                     <option>Web App</option>
-                    <option>Mobile App</option>
-                    <option>Automation / Workflow</option>
-                    <option>Consulting</option>
+                    <option>Desktop App</option>
                     <option>Other</option>
                   </select>
                 </label>
