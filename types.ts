@@ -10,21 +10,12 @@ export interface AppInfo {
   name: string;
   subtitle: string;
   category: Category;
-  rating: number;
-  reviewsCount: string;
   icon: string;
   banner: string;
-  description: string;
+  overview: string;
+  stack: string;
+  outcome: string;
   developer: string;
   website?: string;
-  price: string;
-  ageRating: string;
-}
-
-export interface Review {
-  author: string;
-  rating: number;
-  title: string;
-  content: string;
-  date: string;
+  repo?: string;
 }

@@ -1,6 +1,6 @@
-
-import React, { useMemo } from 'react';
-import { AppInfo, Review } from '../types';
+import React from 'react';
+import { AppInfo } from '../types';
+import { getProjectFilterType } from '../projectType';
 
 interface AppDetailModalProps {
   app: AppInfo | null;
@@ -8,42 +8,37 @@ interface AppDetailModalProps {
 }
 
 export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) => {
-  const insights = useMemo<{ editorial: string; reviews: Review[] } | null>(() => {
-    if (!app) return null;
-    return {
-      editorial: `${app.name} stands out with a polished UI, practical feature set, and reliable performance for daily use.`,
-      reviews: [
-        { author: 'Product Hunter', rating: 5, title: 'Clean and Useful', content: 'Great UX and thoughtful feature choices. It feels polished and fast.', date: '2 days ago' },
-        { author: 'Builder Notes', rating: 4, title: 'Strong Execution', content: 'Solid functionality with clear product direction. Looking forward to future updates.', date: '1 week ago' },
-        { author: 'Daily User', rating: 5, title: 'Excellent Experience', content: 'Easy to use and surprisingly powerful once you start exploring.', date: '2 weeks ago' }
-      ]
-    };
-  }, [app]);
-
   if (!app) return null;
+
+  const projectType = getProjectFilterType(app);
+  const projectUrl = app.website || app.repo || 'https://github.com/kyawhtetyang';
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300">
-      <div 
+      <div
         className="absolute inset-0 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
-      
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300">
-        {/* Header - Sticky */}
-        <div className="flex items-center justify-between p-4 md:p-6 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100">
+
+      <div className="relative w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-in zoom-in-95 duration-300">
+        <div className="flex items-center justify-between px-6 py-4 md:px-10 md:py-6 bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100">
           <div className="flex items-center gap-4">
-            <img src={app.icon} alt={app.name} className="w-16 h-16 rounded-[22%] shadow-md" />
-            <div>
+            <img src={app.icon} alt={app.name} className="w-16 h-16 rounded-[20%] border border-black/5 shadow-sm object-cover" />
+            <div className="text-left">
               <h2 className="text-xl font-bold text-gray-900">{app.name}</h2>
-              <p className="text-sm text-gray-500">{app.developer}</p>
+              <p className="text-sm text-gray-500">{projectType}</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-6 py-1.5 bg-blue-600 text-white font-bold rounded-full text-sm hover:bg-blue-700 transition-colors">
-              {app.price}
-            </button>
-            <button 
+            <a
+              href={projectUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="px-5 py-1.5 bg-gray-100 text-blue-600 font-bold rounded-full text-sm hover:bg-gray-200 transition-colors"
+            >
+              Open
+            </a>
+            <button
               onClick={onClose}
               className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
             >
@@ -54,89 +49,22 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
           </div>
         </div>
 
-        {/* Content */}
-        <div className="flex-1 overflow-y-auto p-6 md:p-10">
-          {/* Quick Stats */}
-          <div className="flex justify-between items-center mb-10 pb-6 border-b border-gray-100 text-center">
-            <div className="flex-1 border-r border-gray-100 px-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Rating</p>
-              <p className="text-lg font-bold text-gray-700">{app.rating} ★</p>
-              <p className="text-[10px] text-gray-400">{app.reviewsCount} Reviews</p>
-            </div>
-            <div className="flex-1 border-r border-gray-100 px-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Age</p>
-              <p className="text-lg font-bold text-gray-700">{app.ageRating}</p>
-              <p className="text-[10px] text-gray-400">Years Old</p>
-            </div>
-            <div className="flex-1 px-2">
-              <p className="text-[10px] font-bold text-gray-400 uppercase mb-1">Category</p>
-              <p className="text-lg font-bold text-gray-700 truncate">{app.category}</p>
-              <p className="text-[10px] text-gray-400">Developer</p>
-            </div>
-          </div>
-
+        <div className="flex-1 overflow-y-auto p-6 md:p-10 text-left">
           <div className="space-y-8">
             <section>
-              <h3 className="text-xl font-bold mb-4">Description</h3>
-              <p className="text-gray-600 leading-relaxed text-sm md:text-base">
-                {app.description}
-              </p>
-              {app.website && (
-                <a
-                  href={app.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex mt-4 px-4 py-2 rounded-full bg-[#fa233b] text-white text-sm font-semibold hover:bg-[#d91e33] transition-colors"
-                >
-                  Visit Website
-                </a>
-              )}
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Overview</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">{app.overview}</p>
             </section>
 
-            {/* AI Editorial Section */}
-            <section className="bg-gray-50 p-6 rounded-2xl border border-gray-100">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="bg-gradient-to-tr from-purple-500 to-blue-500 text-white text-[10px] px-2 py-0.5 rounded font-bold uppercase">AI Insights</span>
-                <h3 className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600">Why We Love This</h3>
-              </div>
-              <p className="text-gray-700 italic font-medium">
-                {insights?.editorial}
-              </p>
-            </section>
-
-            {/* Reviews Section */}
             <section>
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold">Ratings & Reviews</h3>
-                <button className="text-blue-600 text-sm font-medium hover:underline">See All</button>
-              </div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Tech Stack</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">{app.stack}</p>
+            </section>
+
+            <section>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-2">Outcome</h3>
+              <p className="text-gray-600 leading-relaxed text-sm">{app.outcome}</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {insights?.reviews.map((review, idx) => (
-                  <div key={idx} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-bold text-sm truncate mr-2">{review.title}</h4>
-                      <span className="text-xs text-gray-400 whitespace-nowrap">{review.date}</span>
-                    </div>
-                    <div className="flex mb-2">
-                      {[...Array(5)].map((_, i) => (
-                        <svg 
-                          key={i} 
-                          className={`w-3 h-3 ${i < review.rating ? 'text-orange-400' : 'text-gray-300'}`} 
-                          fill="currentColor" 
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                    <p className="text-xs text-gray-600 line-clamp-3 leading-relaxed">
-                      {review.content}
-                    </p>
-                    <p className="mt-3 text-[10px] text-gray-400 font-medium">By {review.author}</p>
-                  </div>
-                ))}
-              </div>
             </section>
           </div>
         </div>

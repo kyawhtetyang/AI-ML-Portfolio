@@ -1,39 +1,12 @@
 
 import React, { useState, useMemo } from 'react';
 import { Category, AppInfo } from './types';
+import { PROJECT_FILTERS, ProjectFilter, getProjectFilterType } from './projectType';
 import { APPS } from './constants';
 import { AppCard } from './components/AppCard';
 import { AppDetailModal } from './components/AppDetailModal';
 import profilePhoto from './docs/09_AIML_Portfolio.jpg';
 
-
-type ProjectFilter = 'All' | 'AI/ML' | 'Python' | 'Web App' | 'Automation';
-
-const PROJECT_FILTERS: ProjectFilter[] = ['All', 'AI/ML', 'Python', 'Web App', 'Automation'];
-
-const getProjectFilterType = (app: AppInfo): ProjectFilter => {
-  const text = `${app.name} ${app.subtitle} ${app.description}`.toLowerCase();
-
-  if (
-    text.includes('ml') ||
-    text.includes('ai') ||
-    text.includes('nlp') ||
-    text.includes('cnn') ||
-    text.includes('lstm') ||
-    text.includes('sbert') ||
-    text.includes('recommender') ||
-    text.includes('regression')
-  ) {
-    return 'AI/ML';
-  }
-  if (text.includes('automation') || text.includes('workflow') || text.includes('organizer') || text.includes('inventory')) {
-    return 'Automation';
-  }
-  if (text.includes('flask') || text.includes('fastapi') || text.includes('api') || text.includes('backend')) {
-    return 'Python';
-  }
-  return 'Web App';
-};
 
 const SidebarItem: React.FC<{ 
   category: Category; 
@@ -62,6 +35,15 @@ const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedProjectFilter, setSelectedProjectFilter] = useState<ProjectFilter>('All');
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
+  const [contactName, setContactName] = useState('');
+  const [contactEmail, setContactEmail] = useState('');
+  const [contactProjectType, setContactProjectType] = useState('AI/ML Project');
+  const [contactMessage, setContactMessage] = useState('');
+  const [isSubmittingContact, setIsSubmittingContact] = useState(false);
+  const [contactSubmitState, setContactSubmitState] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
+    type: 'idle',
+    message: ''
+  });
   const isDiscoverPage = selectedCategory === Category.Discover;
   const isContactPage = selectedCategory === Category.Contact;
   const isChatPage = selectedCategory === Category.Chat;
@@ -70,9 +52,11 @@ const App: React.FC = () => {
     linkedin: 'https://linkedin.com/in/kyawhtetyang',
     github: 'https://github.com/kyawhtetyang',
     resume: 'https://u.pcloud.link/publink/show?code=kZze2M5ZWWU8Wv1GxPfEbPPJLkhDuB6yEt7k',
-    phone: '+84 325 769 834',
-    location: 'Danang, Vietnam'
+    phone: '+95 388337',
+    location: 'Yangon, Myanmar'
   };
+
+  const formspreeEndpoint = (import.meta.env.VITE_FORMSPREE_ENDPOINT as string | undefined)?.trim();
 
   const chatSeedMessages = [
     {
@@ -100,19 +84,19 @@ const App: React.FC = () => {
 
   const featuredWork = [
     {
-      title: 'Resume Intelligence Platform',
-      summary: 'Built an AI-powered platform that ranks candidates against job descriptions using semantic similarity and structured scoring.',
-      stack: 'Python, FastAPI, PostgreSQL, OpenAI'
+      title: 'Fake News Detector (BiLSTM)',
+      summary: 'End-to-end fake news detection pipeline with preprocessing, BiLSTM training, Flask prediction interface, and Docker deployment support.',
+      stack: 'Python, TensorFlow, BiLSTM, Flask, Docker'
     },
     {
-      title: 'Customer Support Copilot',
-      summary: 'Developed a retrieval-augmented assistant that drafts accurate support replies from internal docs and prior tickets.',
-      stack: 'React, Node.js, Vector DB, LLM APIs'
+      title: 'Movie Recommender (Hybrid)',
+      summary: 'Hybrid recommendation MVP combining user/item/content/latent methods with Flask web pages, dynamic recommendations, and SQLite-backed ratings.',
+      stack: 'Python, Flask, SQLite, Hybrid Recommender'
     },
     {
-      title: 'Vision-based Defect Detector',
-      summary: 'Trained and deployed a computer-vision pipeline to detect manufacturing defects with real-time dashboard reporting.',
-      stack: 'PyTorch, OpenCV, Docker, Grafana'
+      title: 'File Organizer Pro',
+      summary: 'Automated local file-processing pipeline with step previews, deduplication modes, presets, undo history, and desktop-ready workflow integration.',
+      stack: 'FastAPI, React, Vite, SQLite/Postgres, Tauri'
     }
   ];
 
@@ -135,6 +119,58 @@ const App: React.FC = () => {
 
   const handleAppClick = (app: AppInfo) => {
     setSelectedApp(app);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!formspreeEndpoint || formspreeEndpoint.includes('your_form_id')) {
+      setContactSubmitState({
+        type: 'error',
+        message: 'Form is not configured yet. Set VITE_FORMSPREE_ENDPOINT in .env.local.'
+      });
+      return;
+    }
+
+    try {
+      setIsSubmittingContact(true);
+      setContactSubmitState({ type: 'idle', message: '' });
+
+      const response = await fetch(formspreeEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          name: contactName,
+          email: contactEmail,
+          projectType: contactProjectType,
+          message: contactMessage,
+          source: 'portfolio-contact-form'
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Submission failed');
+      }
+
+      setContactSubmitState({
+        type: 'success',
+        message: 'Message sent successfully. I will reply soon.'
+      });
+      setContactName('');
+      setContactEmail('');
+      setContactProjectType('AI/ML Project');
+      setContactMessage('');
+    } catch (_error) {
+      setContactSubmitState({
+        type: 'error',
+        message: 'Unable to send right now. Please try again or use the Email button.'
+      });
+    } finally {
+      setIsSubmittingContact(false);
+    }
   };
 
   return (
@@ -335,30 +371,22 @@ const App: React.FC = () => {
           </div>
         ) : isContactPage ? (
           <div className="pt-14 md:pt-16 pb-20">
-            <section className="mb-8">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Contact</p>
-              <div className="bg-white border border-black/10 rounded-2xl p-6 md:p-7">
-                <h3 className="text-base font-bold text-[#1d1d1f]">Let's build something useful together.</h3>
-                <p className="mt-2 text-sm text-[#6e6e73] max-w-2xl">Share your project goal and timeline. I usually reply within 24 hours.</p>
-              </div>
-            </section>
-
             <section className="space-y-8">
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-3">Project Brief</h4>
                 <div className="bg-white border border-black/10 rounded-2xl p-6 md:p-7">
-                <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <form onSubmit={handleContactSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <label className="flex flex-col gap-2">
                     <span className="text-sm font-medium text-[#1d1d1f]">Name</span>
-                    <input type="text" placeholder="Your name" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                    <input type="text" value={contactName} onChange={(e) => { setContactName(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Your name" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
                   </label>
                   <label className="flex flex-col gap-2">
                     <span className="text-sm font-medium text-[#1d1d1f]">Email</span>
-                    <input type="email" placeholder={profile.email} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
+                    <input type="email" required value={contactEmail} onChange={(e) => { setContactEmail(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="you@example.com" className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none" />
                   </label>
                   <label className="flex flex-col gap-2 md:col-span-2">
                     <span className="text-sm font-medium text-[#1d1d1f]">Project Type</span>
-                    <select className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
+                    <select value={contactProjectType} onChange={(e) => { setContactProjectType(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} className="bg-white/95 border border-black/10 rounded-lg px-4 py-2.5 text-sm outline-none">
                       <option>AI/ML Project</option>
                       <option>Web App</option>
                       <option>Mobile App</option>
@@ -369,17 +397,19 @@ const App: React.FC = () => {
                   </label>
                   <label className="flex flex-col gap-2 md:col-span-2">
                     <span className="text-sm font-medium text-[#1d1d1f]">Message</span>
-                    <textarea rows={6} placeholder="Tell me about your goals, expected output, and timeline." className="bg-white/95 border border-black/10 rounded-lg px-4 py-3 text-sm outline-none resize-y" />
+                    <textarea rows={6} required value={contactMessage} onChange={(e) => { setContactMessage(e.target.value); if (contactSubmitState.type !== 'idle') setContactSubmitState({ type: 'idle', message: '' }); }} placeholder="Tell me about your goals, expected output, and timeline." className="bg-white/95 border border-black/10 rounded-lg px-4 py-3 text-sm outline-none resize-y" />
                   </label>
                   <div className="md:col-span-2 flex items-center justify-between gap-4 flex-wrap">
                     <p className="text-xs text-[#6e6e73]">For urgent requests, email me directly.</p>
                     <div className="flex items-center gap-3">
-                      <a href={`mailto:${profile.email}`} className="inline-flex items-center rounded-xl bg-white border border-black/10 text-[#1d1d1f] text-sm font-semibold px-4 py-2 hover:bg-gray-50 transition-colors">
-                        Email
-                      </a>
-                      <button type="button" className="inline-flex items-center rounded-lg bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors">Send Message</button>
+                      <button type="submit" disabled={isSubmittingContact} className="inline-flex items-center rounded-lg bg-[#fa233b] text-white text-sm font-semibold px-5 py-2.5 hover:bg-[#d91e33] transition-colors disabled:opacity-60 disabled:cursor-not-allowed">{isSubmittingContact ? 'Sending...' : 'Send Message'}</button>
                     </div>
                   </div>
+                  {contactSubmitState.type !== 'idle' && (
+                    <p className={`md:col-span-2 text-sm ${contactSubmitState.type === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                      {contactSubmitState.message}
+                    </p>
+                  )}
                 </form>
                 </div>
               </div>
@@ -447,17 +477,10 @@ const App: React.FC = () => {
         ) : (
           <>
             <section className="pt-14 md:pt-16 mb-10">
-              <div className="flex items-center justify-between mb-4">
+              <div className="mb-4">
                 <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-0">
-                  {searchQuery ? `Search Results for "${searchQuery}"` : 'Featured Projects'}
+                  {searchQuery ? `Search Results for "${searchQuery}"` : 'Projects'}
                 </p>
-                <button
-                  type="button"
-                  onClick={() => setSelectedProjectFilter('All')}
-                  className="text-[#fa233b] font-semibold hover:underline text-sm"
-                >
-                  View All
-                </button>
               </div>
 
               <div className="flex flex-wrap gap-2 mb-6">
@@ -477,7 +500,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-x-6 gap-y-10">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-4 gap-y-7">
                 {filteredApps.map(app => (
                   <AppCard key={app.id} app={app} onClick={handleAppClick} />
                 ))}
