@@ -23,6 +23,14 @@ npm run dev
 npm run build
 ```
 
+## Quality Checks
+
+```bash
+npm run lint
+npm run test
+npm run check
+```
+
 ## Contact Form (Formspree)
 
 The `Send Message` button posts directly to Formspree.

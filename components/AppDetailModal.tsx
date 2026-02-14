@@ -11,7 +11,9 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
   if (!app) return null;
 
   const projectType = getProjectFilterType(app);
-  const projectUrl = app.website || app.repo || 'https://github.com/kyawhtetyang';
+  const projectUrl = app.website;
+  const githubUrl = app.repo || 'https://github.com/kyawhtetyang';
+  const downloadUrl = app.downloadUrl;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-300">
@@ -30,14 +32,34 @@ export const AppDetailModal: React.FC<AppDetailModalProps> = ({ app, onClose }) 
             </div>
           </div>
           <div className="flex items-center gap-3">
+            {downloadUrl && (
+              <a
+                href={downloadUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-1.5 bg-[#fa233b] text-white font-bold rounded-full text-sm hover:bg-[#d91e33] transition-colors"
+              >
+                Download
+              </a>
+            )}
             <a
-              href={projectUrl}
+              href={githubUrl}
               target="_blank"
               rel="noreferrer"
-              className="px-5 py-1.5 bg-gray-100 text-blue-600 font-bold rounded-full text-sm hover:bg-gray-200 transition-colors"
+              className="px-5 py-1.5 bg-gray-100 text-[#1d1d1f] font-bold rounded-full text-sm hover:bg-gray-200 transition-colors"
             >
-              Open
+              GitHub
             </a>
+            {projectUrl && (
+              <a
+                href={projectUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-5 py-1.5 bg-gray-100 text-blue-600 font-bold rounded-full text-sm hover:bg-gray-200 transition-colors"
+              >
+                Open
+              </a>
+            )}
             <button
               onClick={onClose}
               className="p-2 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"

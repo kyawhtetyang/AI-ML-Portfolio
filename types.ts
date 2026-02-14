@@ -16,6 +16,8 @@ export interface AppInfo {
   stack: string;
   outcome: string;
   developer: string;
+  featured?: boolean;
   website?: string;
   repo?: string;
+  downloadUrl?: string;
 }

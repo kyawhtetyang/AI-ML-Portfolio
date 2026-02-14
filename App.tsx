@@ -33,7 +33,7 @@ const SidebarItem: React.FC<{
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>(Category.Discover);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedProjectFilter, setSelectedProjectFilter] = useState<ProjectFilter>('All');
+  const [selectedProjectFilter, setSelectedProjectFilter] = useState<ProjectFilter>('Featured');
   const [selectedApp, setSelectedApp] = useState<AppInfo | null>(null);
   const [contactName, setContactName] = useState('');
   const [contactEmail, setContactEmail] = useState('');
@@ -104,7 +104,11 @@ const App: React.FC = () => {
     let list = APPS;
 
     if (selectedCategory === Category.Projects && selectedProjectFilter !== 'All') {
-      list = list.filter(app => getProjectFilterType(app) === selectedProjectFilter);
+      if (selectedProjectFilter === 'Featured') {
+        list = list.filter(app => app.featured);
+      } else {
+        list = list.filter(app => getProjectFilterType(app) === selectedProjectFilter);
+      }
     }
 
     if (searchQuery) {
@@ -477,11 +481,13 @@ const App: React.FC = () => {
         ) : (
           <>
             <section className="pt-14 md:pt-16 mb-10">
-              <div className="mb-4">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-0">
-                  {searchQuery ? `Search Results for "${searchQuery}"` : 'Projects'}
-                </p>
-              </div>
+              {searchQuery && (
+                <div className="mb-4">
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b] mb-0">
+                    {`Search Results for "${searchQuery}"`}
+                  </p>
+                </div>
+              )}
 
               <div className="flex flex-wrap gap-2 mb-6">
                 {PROJECT_FILTERS.map((filter) => (
@@ -500,7 +506,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-7 gap-x-4 gap-y-7">
+              <div className="grid [grid-template-columns:repeat(auto-fill,minmax(140px,140px))] justify-start gap-x-5 gap-y-8">
                 {filteredApps.map(app => (
                   <AppCard key={app.id} app={app} onClick={handleAppClick} />
                 ))}

@@ -23,7 +23,8 @@ export const APPS: AppInfo[] = [
     overview: 'Authentication module with secure login/logout and protected routes for role-based access.',
     stack: 'Python, Flask, SQLite, Jinja2',
     outcome: 'Delivered a reusable auth foundation for Flask apps with clean session management.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang/Flask_LoginUser'
   },
   {
     id: '2',
@@ -35,7 +36,8 @@ export const APPS: AppInfo[] = [
     overview: 'File upload and retrieval service with structured storage flow and user-friendly file listing.',
     stack: 'Python, Flask, File I/O, Bootstrap',
     outcome: 'Built a lightweight storage dashboard that reduces manual file handling time.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang/Flask_Cloud_Storage'
   },
   {
     id: '3',
@@ -47,7 +49,8 @@ export const APPS: AppInfo[] = [
     overview: 'Inventory and transaction tracking for retail workflow with stock visibility and sales updates.',
     stack: 'Python, Flask, SQLAlchemy, Charting',
     outcome: 'Improved visibility of stock and sales operations in one central interface.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang/Flask_POS_Inventory'
   },
   {
     id: '4',
@@ -59,7 +62,9 @@ export const APPS: AppInfo[] = [
     overview: 'Sequence model that classifies news content using language patterns to detect misinformation.',
     stack: 'Python, TensorFlow, BiLSTM, NLP',
     outcome: 'Created an end-to-end text classification pipeline for credibility screening experiments.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    featured: true,
+    repo: 'https://github.com/kyawhtetyang/FakeNewsDetector_BiLSTM'
   },
   {
     id: '5',
@@ -71,7 +76,9 @@ export const APPS: AppInfo[] = [
     overview: 'Semantic similarity engine for comparing article meaning and clustering related content.',
     stack: 'Python, SBERT, Transformers, Pandas',
     outcome: 'Enabled better article matching and semantic ranking for content analysis tasks.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    featured: true,
+    repo: 'https://github.com/kyawhtetyang/ArticleAnalyzer_SBERT'
   },
   {
     id: '6',
@@ -83,7 +90,9 @@ export const APPS: AppInfo[] = [
     overview: 'Recommendation engine combining collaborative and content-based strategies for personalized results.',
     stack: 'Python, Scikit-learn, Recommender Systems',
     outcome: 'Improved recommendation relevance by blending multiple ranking signals.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    featured: true,
+    repo: 'https://github.com/kyawhtetyang/MovieRecommender_Hybrid'
   },
   {
     id: '7',
@@ -95,7 +104,8 @@ export const APPS: AppInfo[] = [
     overview: 'Computer vision classifier for image categories with model training and inference workflow.',
     stack: 'Python, PyTorch, CNN, OpenCV',
     outcome: 'Delivered a practical baseline model for image recognition experimentation.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang/ImageClassifier_CNN'
   },
   {
     id: '8',
@@ -107,7 +117,8 @@ export const APPS: AppInfo[] = [
     overview: 'Backend service with clean CRUD endpoints and maintainable API structure.',
     stack: 'Python, FastAPI, Pydantic, SQLite',
     outcome: 'Provided a reliable API template for rapid backend prototyping.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang/FastAPI_CRUD'
   },
   {
     id: '9',
@@ -119,7 +130,9 @@ export const APPS: AppInfo[] = [
     overview: 'Personal portfolio experience that presents projects, skills, and collaboration channels clearly.',
     stack: 'React, TypeScript, Tailwind, Vite',
     outcome: 'Created a focused portfolio structure optimized for recruiters and clients.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    website: 'https://kyawhtet.com',
+    repo: 'https://github.com/kyawhtetyang/AI-ML-Portfolio'
   },
   {
     id: '10',
@@ -131,7 +144,8 @@ export const APPS: AppInfo[] = [
     overview: 'Regression workflow for estimating property price from key housing features.',
     stack: 'Python, Scikit-learn, Regression, EDA',
     outcome: 'Built a reproducible ML pipeline for real-estate price modeling.',
-    developer: 'Kyaw Htet'
+    developer: 'Kyaw Htet',
+    repo: 'https://github.com/kyawhtetyang'
   },
   {
     id: '11',
@@ -144,11 +158,14 @@ export const APPS: AppInfo[] = [
     stack: 'Python, Automation, File System',
     outcome: 'Reduced repetitive manual organization and improved daily workflow speed.',
     developer: 'Kyaw Htet',
-    website: 'https://files.kyawhtet.com/'
+    featured: true,
+    website: 'https://files.kyawhtet.com/',
+    repo: 'https://github.com/kyawhtetyang/File_Organizer',
+    downloadUrl: 'https://github.com/kyawhtetyang/File_Organizer/releases/download/v0.2.0/File.Organizer_0.2.0_aarch64.dmg'
   },
   {
     id: '12',
-    name: 'Apple Music Frontend',
+    name: 'Music App',
     subtitle: 'Apple-inspired music interface and interactions.',
     category: Category.Projects,
     icon: icon12,
@@ -157,6 +174,8 @@ export const APPS: AppInfo[] = [
     stack: 'React, TypeScript, UI Architecture',
     outcome: 'Demonstrated high-fidelity UI implementation and design-system consistency.',
     developer: 'Kyaw Htet',
-    website: 'https://music.kyawhtet.com'
+    featured: true,
+    website: 'https://music.kyawhtet.com',
+    repo: 'https://github.com/kyawhtetyang/Music_App'
   }
 ];

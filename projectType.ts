@@ -1,11 +1,23 @@
 import { AppInfo } from './types';
 
-export type ProjectFilter = 'All' | 'AI/ML' | 'Python' | 'Web App' | 'Automation';
+export type ProjectFilter = 'Featured' | 'All' | 'AI/ML' | 'Python' | 'Web App' | 'Desktop App';
 
-export const PROJECT_FILTERS: ProjectFilter[] = ['All', 'AI/ML', 'Python', 'Web App', 'Automation'];
+export const PROJECT_FILTERS: ProjectFilter[] = ['Featured', 'All', 'AI/ML', 'Python', 'Web App', 'Desktop App'];
 
 export const getProjectFilterType = (app: AppInfo): ProjectFilter => {
   const text = `${app.name} ${app.subtitle} ${app.overview} ${app.stack}`.toLowerCase();
+
+  if (text.includes('fastapi crud')) {
+    return 'Python';
+  }
+
+  if (text.includes('flask pos inventory')) {
+    return 'Python';
+  }
+
+  if (text.includes('files organizer') || text.includes('file organizer')) {
+    return 'Desktop App';
+  }
 
   if (
     text.includes('ml') ||
@@ -26,7 +38,7 @@ export const getProjectFilterType = (app: AppInfo): ProjectFilter => {
     text.includes('organizer') ||
     text.includes('inventory')
   ) {
-    return 'Automation';
+    return 'Desktop App';
   }
 
   if (
