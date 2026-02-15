@@ -5,7 +5,7 @@ import { PROJECT_FILTERS, ProjectFilter, getProjectFilterType } from './projectT
 import { APPS } from './constants';
 import { AppCard } from './components/AppCard';
 import { AppDetailModal } from './components/AppDetailModal';
-import profilePhoto from './docs/09_AIML_Portfolio.jpg';
+import profilePhoto from './docs/01_AIML_Portfolio.png';
 
 
 const SidebarItem: React.FC<{ 
@@ -445,7 +445,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
-              <div className="grid [grid-template-columns:repeat(auto-fill,minmax(132px,132px))] sm:[grid-template-columns:repeat(auto-fill,minmax(140px,140px))] justify-start gap-x-4 sm:gap-x-5 gap-y-8">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-x-4 sm:gap-x-5 gap-y-6">
                 {filteredApps.map(app => (
                   <AppCard key={app.id} app={app} onClick={handleAppClick} />
                 ))}

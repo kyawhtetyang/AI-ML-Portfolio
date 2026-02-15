@@ -7,6 +7,10 @@ export const PROJECT_FILTERS: ProjectFilter[] = ['Featured', 'All', 'AI/ML', 'Py
 export const getProjectFilterType = (app: AppInfo): ProjectFilter => {
   const text = `${app.name} ${app.subtitle} ${app.overview} ${app.stack}`.toLowerCase();
 
+  if (text.includes('ai/ml portfolio') || text.includes('aiml portfolio')) {
+    return 'AI/ML';
+  }
+
   if (text.includes('fastapi crud')) {
     return 'Python';
   }
