@@ -64,6 +64,7 @@ export const APPS: AppInfo[] = [
     outcome: 'Created an end-to-end text classification pipeline for credibility screening experiments.',
     developer: 'Kyaw Htet',
     featured: true,
+    website: 'https://fake-news.kyawhtet.com',
     repo: 'https://github.com/kyawhtetyang/FakeNewsDetector_BiLSTM'
   },
   {
