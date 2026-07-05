@@ -183,7 +183,7 @@ export const APPS: AppInfo[] = [
     developer: 'Kyaw Htet',
     featured: true,
     website: 'https://visioninspect.kyawhtet.com',
-    repo: 'https://github.com/kyawhtetyang/VisionInspect_AI'
+    repo: 'https://github.com/kyawhtetyang/vision-inspect-ai'
   },
   {
     id: '10.6',
@@ -219,7 +219,7 @@ export const APPS: AppInfo[] = [
   },
   {
     id: '11',
-    name: 'Music App',
+    name: 'Apple Music',
     subtitle: 'Apple-inspired music interface and interactions.',
     category: Category.Projects,
     domain: 'Web',

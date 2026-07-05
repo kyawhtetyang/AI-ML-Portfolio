@@ -134,7 +134,7 @@ export const BLOG_DRAFTS: BlogDraft[] = [
     thumbnail: aimlPortfolioThumbnail
   },
   {
-    title: 'Music App - First VPS Launch',
+    title: 'Apple Music - First VPS Launch',
     status: 'Project Diary',
     summary: 'First VPS deployment with GitHub Pages, Nginx, Postgres metadata, and Cloudflare R2.',
     updated: '2026-01-21',
