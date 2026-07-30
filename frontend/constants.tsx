@@ -188,18 +188,18 @@ export const APPS: AppInfo[] = [
   {
     id: '10.6',
     name: 'RAG Knowledge Assistant',
-    subtitle: 'Production-style RAG assistant with retrieval, evaluation, and VPS deployment.',
+    subtitle: 'Production-style RAG assistant with Gemini answers and verified Render/Vercel deployment.',
     category: Category.Projects,
     domain: 'AI/ML',
     icon: imgGroup19,
     banner: imgGroup19,
-    overview: 'A deployment-ready RAG assistant inspired by RAGFlow patterns, built to demonstrate ingestion, retrieval, citations, evaluation, and end-to-end shipping discipline.',
-    stack: 'Frontend: Minimal static UI\nBackend: FastAPI\nData: PostgreSQL + pgvector\nInfra: Docker Compose + nginx\nRetrieval: vector, FTS, and hybrid modes',
-    outcome: 'Shipped a public RAG assistant with async ingestion, citations, evaluation endpoints, and verified VPS deployment at a recruiter-friendly quality bar.',
+    overview: 'A production-style RAG knowledge assistant inspired by RAGFlow patterns, built to demonstrate document ingestion, hybrid retrieval, citations, provider abstraction, and end-to-end deployment discipline.',
+    stack: 'Frontend: React + Vite + TypeScript\nBackend: FastAPI\nData: PostgreSQL + pgvector\nAI: Gemini API with OpenAI-compatible adapter fallback\nInfra: Docker, Render, Vercel\nRetrieval: vector, full-text search, and hybrid modes',
+    outcome: 'Shipped a public RAG assistant at rag.kyawhtet.com with PDF upload, ingestion, grounded Q&A, citations, Gemini-powered answers, safe fallback behavior, and verified Render/Vercel deployment.',
     developer: 'Kyaw Htet',
     featured: true,
     website: 'https://rag.kyawhtet.com',
-    repo: 'https://github.com/kyawhtetyang/RAG_Knowledge_Assistant'
+    repo: 'https://github.com/kyawhtetyang/rag-knowledge-assistant'
   },
   {
     id: '10.7',

@@ -323,8 +323,8 @@ const App: React.FC = () => {
     },
     {
       title: 'RAG Knowledge Assistant',
-      summary: 'Deployment-ready RAG assistant with ingestion, retrieval, citations, evaluation endpoints, and verified public VPS delivery.',
-      stack: 'FastAPI · PostgreSQL/pgvector · Docker · nginx'
+      summary: 'Public RAG assistant with PDF ingestion, hybrid retrieval, citations, Gemini-powered answers, and verified Render/Vercel deployment.',
+      stack: 'React · FastAPI · PostgreSQL/pgvector · Gemini'
     },
     {
       title: 'Fake News Detector (BiLSTM)',
