@@ -9,7 +9,7 @@ import { AppListItem } from './components/AppListItem';
 import { AppDetailModal } from './components/AppDetailModal';
 import { SettingsView } from './components/SettingsView';
 import { AskView } from './components/ask/AskView';
-import profilePhoto from './docs/01_KyawHtet_Portfolio.png';
+import profilePhoto from './assets/01_KyawHtet_Portfolio.png';
 import { BLOG_DRAFTS, BlogDraft } from './content/blog/drafts';
 import { PHOTO_METADATA } from './content/library/photoMetadata';
 import { PHOTO_LINKS } from './content/library/photoLinks';
@@ -32,7 +32,7 @@ type RouteState = {
   libraryCategory?: LibraryCategory;
 };
 
-const LIBRARY_MODULES = import.meta.glob('./docs/photo/*.jpg', { eager: true, import: 'default' }) as Record<string, string>;
+const LIBRARY_MODULES = import.meta.glob('./assets/photo/*.jpg', { eager: true, import: 'default' }) as Record<string, string>;
 const CATEGORY_PATHS: Record<Category, string> = {
   [Category.Home]: '/',
   [Category.Projects]: '/projects',

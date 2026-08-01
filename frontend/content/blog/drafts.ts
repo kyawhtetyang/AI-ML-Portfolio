@@ -13,21 +13,21 @@ import imageClassifierCnn20260312 from './image-classifier-cnn-2026-03-12.md?raw
 import flaskLoginUser20251110 from './flask-loginuser-2025-11-10.md?raw';
 import fastapiCrud20251001 from './fastapi-crud-2025-10-01.md?raw';
 import mediaDownloaderAutomation20251024 from './media-downloader-automation-2025-10-24.md?raw';
-import aiNotesOsThumbnail from '../../docs/blog_thumbnails/ai-notes-os.jpg';
-import aimlPortfolioThumbnail from '../../docs/blog_thumbnails/aiml-portfolio.jpg';
-import articleAnalyzerThumbnail from '../../docs/blog_thumbnails/article-analyzer.jpg';
-import cloudLanguageThumbnail from '../../docs/blog_thumbnails/cloudlanguage.jpg';
-import fakeNewsThumbnail from '../../docs/blog_thumbnails/fakenews-detector.jpg';
-import fastapiCrudThumbnail from '../../docs/blog_thumbnails/fastapi-crud.png';
-import fileOrganizerThumbnail from '../../docs/blog_thumbnails/file-organizer-pro.jpg';
-import flaskLoginUserThumbnail from '../../docs/blog_thumbnails/flask-login-user.jpg';
-import housePriceRegressionThumbnail from '../../docs/blog_thumbnails/house-price-regression.jpg';
-import imageClassifierCnnThumbnail from '../../docs/blog_thumbnails/image-classifier-cnn.jpg';
-import mediaDownloaderThumbnail from '../../docs/blog_thumbnails/media-downloader.jpg';
-import movieRecommenderThumbnail from '../../docs/blog_thumbnails/movie-recommender.jpg';
-import musicAppThumbnail from '../../docs/blog_thumbnails/music-app.jpg';
-import ragKnowledgeAssistantThumbnail from '../../docs/blog_thumbnails/rag-knowledge-assistant.jpg';
-import researchFlowAiThumbnail from '../../docs/blog_thumbnails/researchflow-ai.png';
+import aiNotesOsThumbnail from '../../assets/blog_thumbnails/ai-notes-os.jpg';
+import aimlPortfolioThumbnail from '../../assets/blog_thumbnails/aiml-portfolio.jpg';
+import articleAnalyzerThumbnail from '../../assets/blog_thumbnails/article-analyzer.jpg';
+import cloudLanguageThumbnail from '../../assets/blog_thumbnails/cloudlanguage.jpg';
+import fakeNewsThumbnail from '../../assets/blog_thumbnails/fakenews-detector.jpg';
+import fastapiCrudThumbnail from '../../assets/blog_thumbnails/fastapi-crud.png';
+import fileOrganizerThumbnail from '../../assets/blog_thumbnails/file-organizer-pro.jpg';
+import flaskLoginUserThumbnail from '../../assets/blog_thumbnails/flask-login-user.jpg';
+import housePriceRegressionThumbnail from '../../assets/blog_thumbnails/house-price-regression.jpg';
+import imageClassifierCnnThumbnail from '../../assets/blog_thumbnails/image-classifier-cnn.jpg';
+import mediaDownloaderThumbnail from '../../assets/blog_thumbnails/media-downloader.jpg';
+import movieRecommenderThumbnail from '../../assets/blog_thumbnails/movie-recommender.jpg';
+import musicAppThumbnail from '../../assets/blog_thumbnails/music-app.jpg';
+import ragKnowledgeAssistantThumbnail from '../../assets/blog_thumbnails/rag-knowledge-assistant.jpg';
+import researchFlowAiThumbnail from '../../assets/blog_thumbnails/researchflow-ai.png';
 
 export type BlogDraft = {
   title: string;
