@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppInfo } from '../types';
-import { getProjectFilterType } from '../projectType';
+import { AppInfo } from '../domain/app';
+import { getProjectFilterType } from '../domain/projectFilters';
 
 interface AppCardProps {
   app: AppInfo;

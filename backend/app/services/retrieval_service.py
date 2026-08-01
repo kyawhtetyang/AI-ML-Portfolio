@@ -1,18 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from pathlib import Path
 
 from app.config import settings
-
-
-@dataclass
-class RetrievedDocument:
-    title: str
-    category: str
-    path: str
-    content: str
-    score: int
+from app.domain.retrieval import RetrievedDocument
 
 
 class RetrievalService:

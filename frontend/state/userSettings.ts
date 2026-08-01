@@ -1,5 +1,5 @@
-import { appConfig } from './config';
-import { Category } from './types';
+import { appConfig } from '../config';
+import { Category } from '../domain/app';
 
 export type ThemeMode = 'light' | 'dark';
 

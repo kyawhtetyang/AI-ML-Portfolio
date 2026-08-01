@@ -1,4 +1,4 @@
-from app.services.retrieval_service import RetrievedDocument
+from app.domain.retrieval import RetrievedDocument
 
 
 class PromptService:

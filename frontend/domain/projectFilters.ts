@@ -1,4 +1,4 @@
-import { AppInfo, ProjectDomain } from './types';
+import { AppInfo, ProjectDomain } from './app';
 
 export type ProjectFilter = 'Featured' | 'All' | ProjectDomain;
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppInfo } from '../types';
+import { AppInfo } from '../domain/app';
 
 interface AppListItemProps {
   app: AppInfo;

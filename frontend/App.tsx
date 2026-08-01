@@ -1,8 +1,8 @@
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { Category, AppInfo } from './types';
-import { PROJECT_FILTERS, ProjectFilter, getProjectFilterType } from './projectType';
-import { APPS } from './constants';
+import { Category, AppInfo } from './domain/app';
+import { PROJECT_FILTERS, ProjectFilter, getProjectFilterType } from './domain/projectFilters';
+import { APPS } from './content/projects/apps';
 import { appConfig } from './config';
 import { AppCard } from './components/AppCard';
 import { AppListItem } from './components/AppListItem';
@@ -10,10 +10,10 @@ import { AppDetailModal } from './components/AppDetailModal';
 import { SettingsView } from './components/SettingsView';
 import { AskView } from './components/ask/AskView';
 import profilePhoto from './docs/01_KyawHtet_Portfolio.png';
-import { BLOG_DRAFTS, BlogDraft } from './blogDrafts';
-import { PHOTO_METADATA } from './booksMetadata';
-import { PHOTO_LINKS } from './bookLinks';
-import { buildMobileNavItems, buildSidebarSections } from './sidebarConfig';
+import { BLOG_DRAFTS, BlogDraft } from './content/blog/drafts';
+import { PHOTO_METADATA } from './content/library/photoMetadata';
+import { PHOTO_LINKS } from './content/library/photoLinks';
+import { buildMobileNavItems, buildSidebarSections } from './navigation/sidebarConfig';
 import {
   getInitialCategory,
   getVisibleCategories,
@@ -21,7 +21,7 @@ import {
   readUserSettings,
   USER_SETTINGS_KEY,
   UserSettings,
-} from './userSettings';
+} from './state/userSettings';
 
 type BlogCategory = 'All';
 type LibraryCategory = 'all' | string;

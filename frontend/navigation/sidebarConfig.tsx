@@ -1,5 +1,5 @@
 import React from 'react';
-import { Category } from './types';
+import { Category } from '../domain/app';
 
 export type NavItemConfig = {
   badge?: string;

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
-import { Category } from './types';
-import { DEFAULT_USER_SETTINGS, getVisibleCategories } from './userSettings';
+import { Category } from './domain/app';
+import { DEFAULT_USER_SETTINGS, getVisibleCategories } from './state/userSettings';
 
 describe('App', () => {
   it('renders Home section by default', () => {

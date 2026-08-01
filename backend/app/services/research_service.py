@@ -1,7 +1,7 @@
 from app.config import settings
 from app.providers.gemini_provider import GeminiProvider
+from app.prompts.ask_prompt_builder import PromptService
 from app.schemas.chat import ChatRequest, ChatResponse, SourceSnippet
-from app.services.prompt_service import PromptService
 from app.services.retrieval_service import RetrievalService
 
 

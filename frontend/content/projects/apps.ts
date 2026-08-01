@@ -1,10 +1,10 @@
-import { AppInfo, Category } from './types';
-import imgAimlPortfolio18 from './docs/18.png';
-import imgCloudLanguage13 from './docs/13_CloudLanguage.png';
-import imgGroup19 from './docs/19.png';
-import imgGroup20 from './docs/20.png';
-import imgMusic21 from './docs/21.png';
-import imgFileOrganizer22 from './docs/22.png';
+import { AppInfo, Category } from '../../domain/app';
+import imgAimlPortfolio18 from '../../docs/18.png';
+import imgCloudLanguage13 from '../../docs/13_CloudLanguage.png';
+import imgGroup19 from '../../docs/19.png';
+import imgGroup20 from '../../docs/20.png';
+import imgMusic21 from '../../docs/21.png';
+import imgFileOrganizer22 from '../../docs/22.png';
 
 export const APPS: AppInfo[] = [
   {

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { AskMode, sendAskMessage } from '../../services/askClient';
-import { ThemeMode } from '../../userSettings';
+import { ThemeMode } from '../../state/userSettings';
 import { ChatInput } from './ChatInput';
 import { ChatMessage, MessageList } from './MessageList';
 

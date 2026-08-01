@@ -1,8 +1,8 @@
 from app.config import settings
 from app.providers.gemini_provider import GeminiProvider
 from app.schemas.chat import ChatRequest, ChatResponse, SourceSnippet
+from app.prompts.ask_prompt_builder import PromptService
 from app.services.portfolio_service import PortfolioService
-from app.services.prompt_service import PromptService
 from app.services.research_service import ResearchService
 from app.services.retrieval_service import RetrievalService
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { appConfig } from '../config';
-import { Category } from '../types';
-import { UserSettings } from '../userSettings';
+import { Category } from '../domain/app';
+import { UserSettings } from '../state/userSettings';
 
 type SettingsViewProps = {
   compactSidebar: boolean;

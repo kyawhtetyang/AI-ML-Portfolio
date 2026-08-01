@@ -5,8 +5,8 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from app.config import settings
+from app.domain.retrieval import RetrievedDocument
 from app.providers.openai_compatible_provider import OpenAICompatibleProvider
-from app.services.retrieval_service import RetrievedDocument
 
 
 class GeminiProvider:
