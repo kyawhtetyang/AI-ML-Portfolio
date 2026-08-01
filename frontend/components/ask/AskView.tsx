@@ -16,6 +16,8 @@ const MODE_OPTIONS: Array<{ id: AskMode; label: string }> = [
   { id: 'research', label: 'Deep Research' },
 ];
 
+const createMessageId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
 type AskViewProps = {
   theme: ThemeMode;
 };
@@ -32,7 +34,8 @@ export const AskView: React.FC<AskViewProps> = ({ theme }) => {
   const modeMenuRef = useRef<HTMLDivElement | null>(null);
   const isDark = theme === 'dark';
   const messages = messagesByMode[mode];
-  const hasMessages = messages.length > 0;
+  const hasAnyMessages = Object.values(messagesByMode).some((entries) => entries.length > 0);
+  const showDockedComposer = hasAnyMessages || isSending;
   const bottomCoverClass = isDark ? 'bg-[#0f1115]' : 'bg-[#f5f5f7]';
   const activeModeLabel = MODE_OPTIONS.find((option) => option.id === mode)?.label ?? 'Quick Chat';
 
@@ -65,9 +68,16 @@ export const AskView: React.FC<AskViewProps> = ({ theme }) => {
     const trimmed = input.trim();
     if (!trimmed || isSending) return;
 
+    const userMessageId = createMessageId();
+    const pendingMessageId = createMessageId();
+
     setMessagesByMode((current) => ({
       ...current,
-      [mode]: [...current[mode], { role: 'user', text: trimmed }],
+      [mode]: [
+        ...current[mode],
+        { id: userMessageId, role: 'user', text: trimmed },
+        { id: pendingMessageId, role: 'assistant', text: '', pending: true },
+      ],
     }));
     setInput('');
     setIsSending(true);
@@ -76,26 +86,30 @@ export const AskView: React.FC<AskViewProps> = ({ theme }) => {
       const result = await sendAskMessage(trimmed, mode);
       setMessagesByMode((current) => ({
         ...current,
-        [mode]: [
-          ...current[mode],
-          {
-            role: 'assistant',
-            text: result.answer,
-            sources: result.used_sources,
-          },
-        ],
+        [mode]: current[mode].map((message) =>
+          message.id === pendingMessageId
+            ? {
+                id: pendingMessageId,
+                role: 'assistant',
+                text: result.answer,
+                sources: result.used_sources,
+              }
+            : message
+        ),
       }));
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Something went wrong while contacting the Ask backend.';
       setMessagesByMode((current) => ({
         ...current,
-        [mode]: [
-          ...current[mode],
-          {
-            role: 'assistant',
-            text: `I couldn't reach the ${activeModeLabel} backend path yet. ${message}`,
-          },
-        ],
+        [mode]: current[mode].map((entry) =>
+          entry.id === pendingMessageId
+            ? {
+                id: pendingMessageId,
+                role: 'assistant',
+                text: `I couldn't reach the ${activeModeLabel} backend path yet. ${message}`,
+              }
+            : entry
+        ),
       }));
     } finally {
       setIsSending(false);
@@ -110,13 +124,13 @@ export const AskView: React.FC<AskViewProps> = ({ theme }) => {
   };
 
   return (
-    <div className={`${hasMessages ? 'pb-32 md:pb-28' : 'pb-0'} -mx-4 md:-mx-6 lg:-mx-6`}>
+    <div className={`${showDockedComposer ? 'pb-32 md:pb-28' : 'pb-0'} -mx-4 md:-mx-6 lg:-mx-6`}>
       <section className="flex h-[calc(100vh-9.5rem)] min-h-0 flex-col overflow-hidden">
         <div
           ref={messagesContainerRef}
-          className={`ask-scrollbar-hidden min-h-0 flex-1 overflow-y-auto ${hasMessages ? 'pb-28 md:pb-32' : 'pb-0'}`}
+          className={`ask-scrollbar-hidden min-h-0 flex-1 overflow-y-auto ${showDockedComposer ? 'pb-28 md:pb-32' : 'pb-0'}`}
         >
-          <div className={`mx-auto w-full max-w-4xl px-6 md:px-8 ${hasMessages ? 'pt-16 md:pt-20' : 'pt-0'}`}>
+          <div className={`mx-auto w-full max-w-4xl px-6 md:px-8 ${showDockedComposer ? 'pt-16 md:pt-20' : 'pt-0'}`}>
             <MessageList isDark={isDark} messages={messages} />
             <div ref={messagesEndRef} aria-hidden="true" />
           </div>
@@ -125,14 +139,14 @@ export const AskView: React.FC<AskViewProps> = ({ theme }) => {
 
       <div
         className={`left-0 right-0 z-20 px-4 md:left-20 md:px-8 lg:left-64 ${
-          hasMessages ? 'fixed bottom-12 pb-2 md:bottom-0 md:pb-3' : 'absolute inset-y-0 flex items-center justify-center'
+          showDockedComposer ? 'fixed bottom-12 pb-2 md:bottom-0 md:pb-3' : 'absolute inset-y-0 flex items-center justify-center'
         }`}
       >
-        {hasMessages ? (
+        {showDockedComposer ? (
           <div className={`pointer-events-none absolute inset-x-0 bottom-0 h-24 ${bottomCoverClass} md:h-28`} />
         ) : null}
         <div className="mx-auto w-full max-w-4xl">
-          {!hasMessages ? (
+          {!showDockedComposer ? (
             <div className="mb-8 text-center">
               <h2 className={`text-4xl font-semibold tracking-tight ${isDark ? 'text-white' : 'text-[#1d1d1f]'}`}>
                 What are you working on?

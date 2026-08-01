@@ -3,9 +3,11 @@ import { AskSource } from '../../services/askClient';
 import { SourcePanel } from './SourcePanel';
 
 export type ChatMessage = {
+  id: string;
   role: 'assistant' | 'user';
   text: string;
   sources?: AskSource[];
+  pending?: boolean;
 };
 
 type MessageListProps = {
@@ -25,7 +27,7 @@ export const MessageList: React.FC<MessageListProps> = ({ isDark, messages }) =>
     <div className="space-y-6">
       {messages.map((message, index) => (
         <div
-          key={index}
+          key={message.id || index}
           className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
         >
           <div className={`max-w-[88%] space-y-3 md:max-w-[78%] ${message.role === 'user' ? '' : 'rounded-2xl'}`}>
@@ -40,10 +42,27 @@ export const MessageList: React.FC<MessageListProps> = ({ isDark, messages }) =>
                     : 'bg-transparent px-0 py-0 leading-8 text-[#1d1d1f]'
               }`}
             >
-              {message.role === 'assistant' ? toPlainAssistantText(message.text) : message.text}
+              {message.pending ? (
+                <span
+                  className={`inline-flex items-center gap-2 text-sm ${
+                    isDark ? 'text-[#9ca3af]' : 'text-[#6b7280]'
+                  }`}
+                >
+                  <span>Thinking</span>
+                  <span className="inline-flex items-center gap-1">
+                    <span className={`h-1.5 w-1.5 rounded-full ${isDark ? 'bg-[#9ca3af]' : 'bg-[#6b7280]'} animate-pulse`} />
+                    <span className={`h-1.5 w-1.5 rounded-full ${isDark ? 'bg-[#9ca3af]' : 'bg-[#6b7280]'} animate-pulse [animation-delay:150ms]`} />
+                    <span className={`h-1.5 w-1.5 rounded-full ${isDark ? 'bg-[#9ca3af]' : 'bg-[#6b7280]'} animate-pulse [animation-delay:300ms]`} />
+                  </span>
+                </span>
+              ) : message.role === 'assistant' ? (
+                toPlainAssistantText(message.text)
+              ) : (
+                message.text
+              )}
             </div>
 
-            {message.role === 'assistant' ? (
+            {message.role === 'assistant' && !message.pending ? (
               <SourcePanel isDark={isDark} sources={message.sources ?? []} />
             ) : null}
           </div>
