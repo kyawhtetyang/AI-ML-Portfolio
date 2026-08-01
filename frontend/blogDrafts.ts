@@ -4,6 +4,7 @@ import aimlPortfolioV220260210 from './content/blog/aiml-portfolio-v2-2026-02-10
 import cloudLanguageRebrand20260216 from './content/blog/cloudlanguage-rebrand-2026-02-16.md?raw';
 import aiNotesOs20260318 from './content/blog/ai-notes-os-2026-03-18.md?raw';
 import ragKnowledgeAssistant20260603 from './content/blog/rag-knowledge-assistant-2026-06-03.md?raw';
+import researchFlowAi20260801 from './content/blog/researchflow-ai-2026-08-01.md?raw';
 import fakeNewsBilstm20251110 from './content/blog/fakenews-bilstm-2025-11-10.md?raw';
 import movieRecommenderHybrid20251110 from './content/blog/movie-recommender-hybrid-2025-11-10.md?raw';
 import articleAnalyzerSbert20251110 from './content/blog/article-analyzer-sbert-2025-11-10.md?raw';
@@ -26,6 +27,7 @@ import mediaDownloaderThumbnail from './docs/blog_thumbnails/media-downloader.jp
 import movieRecommenderThumbnail from './docs/blog_thumbnails/movie-recommender.jpg';
 import musicAppThumbnail from './docs/blog_thumbnails/music-app.jpg';
 import ragKnowledgeAssistantThumbnail from './docs/blog_thumbnails/rag-knowledge-assistant.jpg';
+import researchFlowAiThumbnail from './docs/blog_thumbnails/researchflow-ai.png';
 
 export type BlogDraft = {
   title: string;
@@ -37,6 +39,14 @@ export type BlogDraft = {
 };
 
 export const BLOG_DRAFTS: BlogDraft[] = [
+  {
+    title: 'ResearchFlow AI - Going Beyond RAG',
+    status: 'Project Diary',
+    summary: 'Built a multi-step research workflow to move from retrieval QA into planning, evidence collection, synthesis, and report-style output.',
+    updated: '2026-08-01',
+    content: researchFlowAi20260801,
+    thumbnail: researchFlowAiThumbnail
+  },
   {
     title: 'RAG Knowledge Assistant - Learning Retrieval End to End',
     status: 'Project Diary',

@@ -310,28 +310,15 @@ const App: React.FC = () => {
       ? libraryItems
       : libraryItems.filter((item) => item.category === selectedLibraryCategory);
 
-  const featuredWork = [
-    {
-      title: 'VisionInspect AI',
-      summary: 'Recruiter-facing computer vision inspection platform with upload, detect, annotate, and report flow built for a polished public demo.',
-      stack: 'React · FastAPI · PostgreSQL · Docker'
-    },
-    {
-      title: 'CloudLanguage (MVP)',
-      summary: 'Mobile-first language learning product for Burmese learners with lesson flow, progress tracking, review loops, and live VPS deployment.',
-      stack: 'React · TypeScript · FastAPI · Lesson JSON'
-    },
-    {
-      title: 'RAG Knowledge Assistant',
-      summary: 'Public RAG assistant with PDF ingestion, hybrid retrieval, citations, Gemini-powered answers, and verified Render/Vercel deployment.',
-      stack: 'React · FastAPI · PostgreSQL/pgvector · Gemini'
-    },
-    {
-      title: 'Fake News Detector (BiLSTM)',
-      summary: 'End-to-end fake news detection pipeline with preprocessing, BiLSTM training, Flask prediction interface, and Docker deployment support.',
-      stack: 'Python · TensorFlow · BiLSTM · Flask'
-    }
-  ];
+  const featuredWork = useMemo(
+    () =>
+      APPS.filter((app) => app.featured).map((app) => ({
+        title: app.name,
+        summary: app.overview,
+        stack: app.stack.replace(/\n/g, ' · '),
+      })),
+    []
+  );
 
   const blogDrafts = useMemo(() => {
     if (selectedBlogCategory === 'All') {
