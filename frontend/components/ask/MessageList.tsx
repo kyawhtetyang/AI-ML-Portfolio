@@ -13,6 +13,13 @@ type MessageListProps = {
   messages: ChatMessage[];
 };
 
+const toPlainAssistantText = (text: string) =>
+  text
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1')
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/`([^`]+)`/g, '$1');
+
 export const MessageList: React.FC<MessageListProps> = ({ isDark, messages }) => {
   return (
     <div className="space-y-6">
@@ -33,7 +40,7 @@ export const MessageList: React.FC<MessageListProps> = ({ isDark, messages }) =>
                     : 'bg-transparent px-0 py-0 leading-8 text-[#1d1d1f]'
               }`}
             >
-              {message.text}
+              {message.role === 'assistant' ? toPlainAssistantText(message.text) : message.text}
             </div>
 
             {message.role === 'assistant' ? (
