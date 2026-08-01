@@ -8,7 +8,8 @@ Current responsibilities:
 - read curated portfolio source documents
 - retrieve matching source docs for each question
 - call Gemini when `GEMINI_API_KEY` is configured
-- fall back to a grounded local formatter when Gemini is unavailable
+- fall back to an OpenAI-compatible provider such as DeepSeek when Gemini is unavailable
+- fall back to a grounded local formatter when no live provider is available
 - allow local frontend development across common Vite ports on `localhost` and `127.0.0.1`
 
 ## Run Locally
@@ -19,16 +20,32 @@ Current responsibilities:
 cp .env.example .env
 ```
 
-2. Add your `GEMINI_API_KEY` in `.env`.
+2. Add your provider keys in `.env`.
 
-3. Start the backend:
+Recommended setup:
 
 ```bash
-pip install -r requirements.txt
-uvicorn app.main:app
+GEMINI_API_KEY=your_gemini_key
+OPENAI_COMPATIBLE_BASE_URL=https://api.deepseek.com
+OPENAI_COMPATIBLE_MODEL=deepseek-chat
+OPENAI_COMPATIBLE_API_KEY=your_deepseek_key
 ```
 
-4. Optional smoke test:
+3. Create and activate the project-local virtual environment:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+4. Start the backend:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+5. Optional smoke test:
 
 ```bash
 python scripts/smoke_chat.py

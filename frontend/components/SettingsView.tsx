@@ -38,24 +38,6 @@ const SettingsToggle: React.FC<{
   </button>
 );
 
-const ThemeChoiceButton: React.FC<{
-  active: boolean;
-  label: string;
-  onClick: () => void;
-}> = ({ active, label, onClick }) => (
-  <button
-    type="button"
-    onClick={onClick}
-    className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-colors ${
-      active
-        ? 'border-[#fa233b] bg-[#fa233b] text-white'
-        : 'border-black/10 bg-white text-[#1d1d1f] hover:bg-gray-50'
-    }`}
-  >
-    {label}
-  </button>
-);
-
 export const SettingsView: React.FC<SettingsViewProps> = ({
   compactSidebar,
   formspreeEndpoint,
@@ -70,20 +52,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   <div className="pt-16 md:pt-20 space-y-8 pb-20">
     <section className="grid grid-cols-1 xl:grid-cols-12 gap-6">
       <div className="xl:col-span-7 space-y-4">
-        <div className="rounded-2xl border border-black/10 bg-white p-6">
-          <p className="text-xs font-bold uppercase tracking-wider text-[#fa233b]">Appearance</p>
-          <h3 className="mt-3 text-lg font-bold text-[#1d1d1f]">Personalize this browser</h3>
-          <p className="mt-2 text-sm text-[#6e6e73]">
-            These preferences stay local to your current browser. Deploy flags in `.env.local` still decide what can exist at all.
-          </p>
-          <p className="mt-3 inline-flex rounded-full bg-[#fa233b]/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-[#fa233b]">
-            Settings Beta
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3">
-            <ThemeChoiceButton active={theme === 'dark'} label="Dark" onClick={() => onUpdateSetting('theme', 'dark')} />
-            <ThemeChoiceButton active={theme === 'light'} label="Light" onClick={() => onUpdateSetting('theme', 'light')} />
-          </div>
-        </div>
+        <SettingsToggle
+          checked={theme === 'dark'}
+          label="Appearance"
+          description="Switch between light and dark appearance."
+          onChange={(checked) => onUpdateSetting('theme', checked ? 'dark' : 'light')}
+        />
 
         <SettingsToggle
           checked={userSettings.preferCompactSidebar}

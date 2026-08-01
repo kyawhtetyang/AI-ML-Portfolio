@@ -1,5 +1,7 @@
 import { appConfig } from '../config';
 
+export type AskMode = 'chat' | 'portfolio' | 'research';
+
 export type AskSource = {
   title: string;
   category: string;
@@ -13,13 +15,13 @@ export type AskResponse = {
   used_sources: AskSource[];
 };
 
-export const sendAskMessage = async (message: string): Promise<AskResponse> => {
+export const sendAskMessage = async (message: string, mode: AskMode): Promise<AskResponse> => {
   const response = await fetch(`${appConfig.apiBaseUrl}/api/chat`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({ message, mode }),
   });
 
   if (!response.ok) {

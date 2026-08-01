@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.ask import router as ask_router
 from app.api.chat import router as chat_router
 from app.api.health import router as health_router
 from app.config import settings
@@ -27,4 +28,5 @@ def root() -> dict[str, str]:
 
 
 app.include_router(health_router)
+app.include_router(ask_router)
 app.include_router(chat_router)

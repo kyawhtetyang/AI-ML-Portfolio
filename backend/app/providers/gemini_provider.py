@@ -5,10 +5,36 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from app.config import settings
+from app.providers.openai_compatible_provider import OpenAICompatibleProvider
 from app.services.retrieval_service import RetrievedDocument
 
 
 class GeminiProvider:
+    def __init__(self) -> None:
+        self.fallback_provider = OpenAICompatibleProvider()
+        self.last_provider = settings.model_provider
+
+    def generate_text(
+        self,
+        system_instruction: str,
+        prompt: str,
+        fallback: str,
+    ) -> str:
+        if settings.gemini_api_key:
+            live_answer = self._call_gemini(system_instruction=system_instruction, prompt=prompt)
+            if live_answer:
+                self.last_provider = "gemini"
+                return live_answer
+        fallback_answer = self.fallback_provider.generate_text(
+            system_instruction=system_instruction,
+            prompt=prompt,
+        )
+        if fallback_answer:
+            self.last_provider = self.fallback_provider.provider_label
+            return fallback_answer
+        self.last_provider = "fallback"
+        return fallback
+
     def generate_answer(
         self,
         question: str,
@@ -17,6 +43,7 @@ class GeminiProvider:
         prompt: str,
     ) -> str:
         if not context_docs:
+            self.last_provider = "fallback"
             return (
                 "I do not have enough portfolio context yet to answer that confidently. "
                 "Add curated source docs under backend/data/source_docs so I can answer like a recruiter-facing assistant."
@@ -25,11 +52,21 @@ class GeminiProvider:
         if settings.gemini_api_key:
             live_answer = self._call_gemini(system_instruction=system_instruction, prompt=prompt)
             if live_answer:
+                self.last_provider = "gemini"
                 return live_answer
+
+        fallback_answer = self.fallback_provider.generate_text(
+            system_instruction=system_instruction,
+            prompt=prompt,
+        )
+        if fallback_answer:
+            self.last_provider = self.fallback_provider.provider_label
+            return fallback_answer
 
         intro = "Based on the portfolio context I have, here is the clearest answer:\n\n"
         body = context_docs[0].content.strip()
         source_list = ", ".join(f"{doc.category}/{doc.title}" for doc in context_docs)
+        self.last_provider = "fallback"
         return f"{intro}{body}\n\nCurrent supporting sources: {source_list}."
 
     def _call_gemini(self, system_instruction: str, prompt: str) -> str | None:

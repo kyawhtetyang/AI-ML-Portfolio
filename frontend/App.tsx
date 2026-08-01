@@ -8,7 +8,7 @@ import { AppCard } from './components/AppCard';
 import { AppListItem } from './components/AppListItem';
 import { AppDetailModal } from './components/AppDetailModal';
 import { SettingsView } from './components/SettingsView';
-import { AskView } from './components/AskView';
+import { AskView } from './components/ask/AskView';
 import profilePhoto from './docs/01_KyawHtet_Portfolio.png';
 import { BLOG_DRAFTS, BlogDraft } from './blogDrafts';
 import { PHOTO_METADATA } from './booksMetadata';

@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 
 class ChatRequest(BaseModel):
+    mode: str = Field(default="chat")
     message: str = Field(..., min_length=1, max_length=4000)
     session_id: str | None = None
 
